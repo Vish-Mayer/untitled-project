@@ -1,0 +1,64 @@
+gem 'rake'
+
+task default: %w[test_tables]
+
+task :bundle do
+  puts 'Installing bundle...'
+  sh 'gem install bundler'
+end
+
+task gems: [:bundle] do
+  puts 'Running bundle...'
+  sh 'bundle'
+end
+
+task postgresql: [:gems] do
+  puts 'Installing postgresql...'
+  sh 'brew install postgresql'
+end
+
+task database: [:postgresql] do
+  puts 'Clearing and creating databases...'
+  begin
+    sh "dropdb 'pocket_caddy'"
+  rescue StandardError => e
+    puts e
+  end
+  begin
+    sh "createdb 'pocket_caddy'"
+  rescue StandardError => e
+    puts e
+  end
+  begin
+    sh "dropdb 'pocket_caddy_test'"
+  rescue StandardError => e
+    puts e
+  end
+  begin
+    sh "createdb 'pocket_caddy_test'"
+  rescue StandardError => e
+    puts e
+  end
+end
+
+task development_tables: [:database] do
+  puts 'creating extentions'
+  sh %[psql -U #{ENV['USER']} -d pocket_caddy --command='CREATE extension IF NOT EXISTS "uuid-ossp";
+  ']
+end
+
+task development_tables: [:database] do
+  puts 'Creating development tables...'
+  sh %[psql -U #{ENV['USER']} -d pocket_caddy --command="CREATE TABLE users(user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(), user_name VARCHAR(255) NOT NULL, email VARCHAR(60) NOT NULL, password VARCHAR(140) NOT NULL);
+  "]
+end
+
+task development_tables: [:database] do
+  puts 'Adding development data...'
+  sh %[psql -U #{ENV['USER']} -d pocket_caddy --command="INSERT INTO users(user_name, email, password) VALUES ('username123', 'test@testmail.com', 'password123');"]
+end
+
+task test_tables: [:development_tables] do
+  puts 'Creating test tables...'
+  sh %[psql -U #{ENV['USER']} -d pocket_caddy_test --command="CREATE TABLE users(id SERIAL PRIMARY KEY, user_name VARCHAR(60), email VARCHAR(60), password VARCHAR(140));"]
+end
