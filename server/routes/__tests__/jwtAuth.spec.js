@@ -28,5 +28,28 @@ describe("POST/ register", () => {
         expect.stringContaining("json")
       );
     });
+
+    it("response contains a userId", async () => {
+      const response = await request(app)
+        .post("/auth/register")
+        .send({
+          name: "name",
+          email: "email",
+          password: "password"
+        });
+      expect(response.body.userId).toBeDefined();
+    });
+  });
+
+  describe("when an entry is missing", () => {
+    it("returns status 400 code", async () => {
+      const response = await request(app)
+        .post("/auth/register")
+        .send({
+          name: "name",
+          email: "email"
+        });
+      expect(response.statusCode).toBe(400);
+    });
   });
 });
