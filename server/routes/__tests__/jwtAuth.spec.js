@@ -43,13 +43,21 @@ describe("POST/ register", () => {
 
   describe("when an entry is missing", () => {
     it("returns status 400 code", async () => {
-      const response = await request(app)
-        .post("/auth/register")
-        .send({
-          name: "name",
-          email: "email"
-        });
-      expect(response.statusCode).toBe(400);
+      const bodyData = [
+        { name: "name", email: "email" },
+        { email: "email", password: "password" },
+        { name: "name", password: "password" },
+        {}
+      ];
+
+      for (const body of bodyData) {
+        const response = await request(app)
+          .post("/auth/register")
+          .send({
+            body
+          });
+        expect(response.statusCode).toBe(400);
+      }
     });
   });
 });
