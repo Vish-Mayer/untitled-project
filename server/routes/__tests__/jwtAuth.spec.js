@@ -5,7 +5,7 @@ const app = require("../../app");
 
 describe("POST/ register", () => {
   describe("given a username and a password", () => {
-    it("should respnd with a 200 status code", async () => {
+    it("should respnd with a 200 status code, returns json in the content type header, response contains a userId", async () => {
       const response = await request(app)
         .post("/auth/register")
         .send({
@@ -14,29 +14,9 @@ describe("POST/ register", () => {
           password: "password"
         });
       expect(response.statusCode).toBe(200);
-    });
-
-    it("returns json in the content type header", async () => {
-      const response = await request(app)
-        .post("/auth/register")
-        .send({
-          name: "name",
-          email: "email",
-          password: "password"
-        });
       expect(response.headers["content-type"]).toEqual(
         expect.stringContaining("json")
       );
-    });
-
-    it("response contains a userId", async () => {
-      const response = await request(app)
-        .post("/auth/register")
-        .send({
-          name: "name",
-          email: "email",
-          password: "password"
-        });
       expect(response.body.userId).toBeDefined();
     });
   });
@@ -46,16 +26,17 @@ describe("POST/ register", () => {
       const bodyData = [
         { name: "name", email: "email" },
         { email: "email", password: "password" },
-        { name: "name", password: "password" },
+        { password: "password", name: "name" },
+        { name: "name" },
+        { email: "email" },
+        { password: "password" },
         {}
       ];
 
       for (const body of bodyData) {
         const response = await request(app)
           .post("/auth/register")
-          .send({
-            body
-          });
+          .send(body);
         expect(response.statusCode).toBe(400);
       }
     });
