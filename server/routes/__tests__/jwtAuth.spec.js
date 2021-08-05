@@ -1,5 +1,5 @@
 process.env.NODE_ENV = "test";
-const db = require("../../db");
+const db = require("../../dbConnection");
 const request = require("supertest");
 const app = require("../../app");
 

@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const authRoutes = require("./routes/jwtAuth");
-const pool = require("./db").default;
+const pool = require("./dbConnection").default;
 
 app.use(express.json());
 app.use(cors());
