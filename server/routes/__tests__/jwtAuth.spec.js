@@ -15,5 +15,18 @@ describe("POST/ register", () => {
         });
       expect(response.statusCode).toBe(200);
     });
+
+    it("returns json in the content type header", async () => {
+      const response = await request(app)
+        .post("/auth/register")
+        .send({
+          name: "name",
+          email: "email",
+          password: "password"
+        });
+      expect(response.headers["content-type"]).toEqual(
+        expect.stringContaining("json")
+      );
+    });
   });
 });
