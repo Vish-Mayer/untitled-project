@@ -1,14 +1,24 @@
-const router = require("express").Router();
-const pool = require("../dbConnection");
+import express from "express";
+import db from "../dbConnection";
+const router = express();
 
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
     res.sendStatus(400);
     return;
-  } else {
-    res.send({ userId: 0 });
+  }
+
+  try {
+    //database quries
+
+    res.json(user.rows);
+  } catch (error) {
+    console.error(error.message);
+    res.sendStatus(500).send("Server Error");
+    db.end();
+    return;
   }
 });
 
-module.exports = router;
+export default router;

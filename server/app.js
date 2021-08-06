@@ -1,8 +1,7 @@
-const express = require("express");
+import express from "express";
 const app = express();
-const cors = require("cors");
-const authRoutes = require("./routes/jwtAuth");
-const pool = require("./dbConnection").default;
+import cors from "cors";
+import authRoutes from "./routes/jwtAuth";
 
 app.use(express.json());
 app.use(cors());
@@ -13,4 +12,4 @@ app.use(cors());
 
 app.use("/auth", authRoutes);
 
-module.exports = app;
+export default app;
