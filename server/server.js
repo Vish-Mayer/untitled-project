@@ -1,5 +1,6 @@
+import dbConnection from "./dbConnection";
 import app from "./app";
 
-app.listen(5000, () => {
-  console.log("server has started on port 5000");
+app.listen(process.env.SERVER, () => {
+  console.log(`server has started on port ${process.env.SERVER}`);
 });

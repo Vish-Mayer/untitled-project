@@ -1,5 +1,8 @@
 import express from "express";
 import dbConnection from "../dbConnection";
+import jwtGenerator from "../utils/jwtGenerator";
+import bcryptGenerator from "../utils/bcryptGenerator";
+
 const router = express();
 
 router.post("/register", async (req, res) => {
@@ -19,7 +22,16 @@ router.post("/register", async (req, res) => {
       return res.status(401).send("user already exists");
     }
 
-    res.json(user.rows);
+    const bcryptPassword = await bcryptGenerator(password);
+
+    const newUser = await dbConnection.query(
+      "INSERT INTO users(user_name, user_email, user_password) VALUES ($1, $2, $3) RETURNING *",
+      [name, email, bcryptPassword]
+    );
+
+    const token = jwtGenerator(newUser.rows[0].user_id);
+
+    res.json({ token });
   } catch (error) {
     console.error(error.message);
     res.sendStatus(500).send("Server Error");
