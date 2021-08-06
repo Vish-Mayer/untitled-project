@@ -1,5 +1,5 @@
 import express from "express";
-import db from "../dbConnection";
+import dbConnection from "../dbConnection";
 const router = express();
 
 router.post("/register", async (req, res) => {
@@ -10,7 +10,14 @@ router.post("/register", async (req, res) => {
   }
 
   try {
-    //database quries
+    const user = await dbConnection.query(
+      "SELECT * FROM users WHERE user_email = $1",
+      [email]
+    );
+
+    if (user.rows.length !== 0) {
+      return res.status(401).send("user already exists");
+    }
 
     res.json(user.rows);
   } catch (error) {

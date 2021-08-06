@@ -9,10 +9,9 @@
     "dev": "nodemon --experimental-modules --es-module-specifier-resolution=node server.js"
   },
   "jest": {
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ]
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
   },
   "author": "",
   "license": "ISC",
@@ -27,6 +26,8 @@
     "superdev": "0.0.0-3"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.15.0",
+    "babel-jest": "^27.0.6",
     "jest": "^27.0.6",
     "supertest": "^6.1.4"
   }

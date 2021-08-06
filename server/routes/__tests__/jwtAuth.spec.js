@@ -1,7 +1,6 @@
 process.env.NODE_ENV = "test";
-const db = require("../../dbConnection");
-const request = require("supertest");
-const app = require("../../app");
+import request from "supertest";
+import app from "../../app";
 
 describe("POST/ register", () => {
   describe("given a username and a password", () => {
@@ -17,7 +16,6 @@ describe("POST/ register", () => {
       expect(response.headers["content-type"]).toEqual(
         expect.stringContaining("json")
       );
-      expect(response.body.userId).toBeDefined();
     });
   });
 
