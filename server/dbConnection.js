@@ -6,9 +6,9 @@ const Pool = pg.Pool;
 
 const enviroment = () => {
   if (process.env.NODE_ENV === "test") {
-    return "pocket_caddy_test";
+    return process.env.TEST_DATABASE;
   } else {
-    return "pocket_caddy";
+    return process.env.DEVELOPMENT_DATABASE;
   }
 };
 
