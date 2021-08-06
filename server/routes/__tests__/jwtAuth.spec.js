@@ -32,9 +32,7 @@ describe("POST/ register", () => {
           password: "password"
         });
       const database = await dbConnection.query("SELECT * FROM users");
-
       expect(database.rows[0].user_name).toEqual("name");
-      expect(database.rows[0].user_email).toEqual("email");
       expect(database.rows[0].user_email).toEqual("email");
     });
   });
