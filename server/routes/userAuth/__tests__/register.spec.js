@@ -1,7 +1,7 @@
 process.env.NODE_ENV = "test";
 import request from "supertest";
-import dbConnection from "../../dbConnection";
-import app from "../../app";
+import dbConnection from "../../../dbConnection";
+import app from "../../../app";
 
 describe("POST/ register", () => {
   beforeAll(async () => {

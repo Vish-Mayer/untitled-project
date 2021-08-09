@@ -1,7 +1,7 @@
 import express from "express";
-import dbConnection from "../dbConnection";
-import jwtGenerator from "../utils/jwtGenerator";
-import bcryptGenerator from "../utils/bcryptGenerator";
+import dbConnection from "../../dbConnection";
+import jwtGenerator from "../../utils/jwtGenerator";
+import bcryptGenerator from "../../utils/bcryptGenerator";
 
 const router = express();
 

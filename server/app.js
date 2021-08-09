@@ -1,7 +1,8 @@
 import express from "express";
 const app = express();
 import cors from "cors";
-import authRoutes from "./routes/jwtAuth";
+import register from "./routes/userAuth/register";
+import signIn from "./routes/userAuth/login";
 
 app.use(express.json());
 app.use(cors());
@@ -10,6 +11,7 @@ app.use(cors());
 
 //register and login routes
 
-app.use("/auth", authRoutes);
+app.use("/auth", register);
+app.use("/auth", signIn);
 
 export default app;
