@@ -2,7 +2,7 @@ import express from "express";
 const app = express();
 import cors from "cors";
 import register from "./routes/userAuth/register";
-import signIn from "./routes/userAuth/login";
+import login from "./routes/userAuth/login";
 
 app.use(express.json());
 app.use(cors());
@@ -11,6 +11,6 @@ app.use(cors());
 
 //register and login routes
 
-app.use("/auth", [register, signIn]);
+app.use("/auth", [register, login]);
 
 export default app;
