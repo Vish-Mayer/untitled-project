@@ -49,16 +49,16 @@ end
 
 task development_tables: [:database] do
   puts 'Creating development tables...'
-  sh %[psql -U #{ENV['USER']} -d pocket_caddy --command="CREATE TABLE users(user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(), user_name VARCHAR(255) NOT NULL, user_email VARCHAR(60) NOT NULL, user_password VARCHAR(140) NOT NULL);
+  sh %[psql -U #{ENV['USER']} -d pocket_caddy --command="CREATE TABLE users(user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(), user_name VARCHAR(255) NOT NULL, user_email VARCHAR(60) NOT NULL, user_password VARCHAR(140) NOT NULL, user_verified BOOLEAN NOT NULL);
   "]
 end
 
 task development_tables: [:database] do
   puts 'Adding development data...'
-  sh %[psql -U #{ENV['USER']} -d pocket_caddy --command="INSERT INTO users(user_name, user_email, user_password) VALUES ('username123', 'test@testmail.com', 'password123');"]
+  sh %[psql -U #{ENV['USER']} -d pocket_caddy --command="INSERT INTO users(user_name, user_email, user_password, user_verified) VALUES ('username123', 'test@testmail.com', 'password123', FALSE);"]
 end
 
 task test_tables: [:development_tables] do
   puts 'Creating test tables...'
-  sh %[psql -U #{ENV['USER']} -d pocket_caddy_test --command="CREATE TABLE users(user_id SERIAL PRIMARY KEY, user_name VARCHAR(255) NOT NULL, user_email VARCHAR(60) NOT NULL, user_password VARCHAR(140) NOT NULL);"]
+  sh %[psql -U #{ENV['USER']} -d pocket_caddy_test --command="CREATE TABLE users(user_id SERIAL PRIMARY KEY, user_name VARCHAR(255) NOT NULL, user_email VARCHAR(60) NOT NULL, user_password VARCHAR(140) NOT NULL, user_verified BOOLEAN NOT NULL);"]
 end

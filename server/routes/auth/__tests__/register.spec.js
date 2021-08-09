@@ -28,6 +28,7 @@ describe("POST/ register", () => {
     it("correctly stores user_name, email, and encryted password into the database", async () => {
       await createUser("name", "validmail2@mail.com", "Validpassword2");
       const user = await dbConnection.query("SELECT * FROM users");
+      expect(user.rows[0].user_verified).toEqual(false);
       expect(user.rows[0].user_name).toEqual("name");
       expect(user.rows[0].user_email).toEqual("validmail2@mail.com");
       expect(
