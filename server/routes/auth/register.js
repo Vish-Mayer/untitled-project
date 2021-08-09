@@ -29,6 +29,7 @@ router.post("/register", async (req, res) => {
 
     if (!password.match(validPasswordExp)) {
       return res.status(401).send({
+        passwordMessage: "Your Password needs to",
         passwordRules: [
           "include both upper and lowercase characters",
           "include at least one number",
