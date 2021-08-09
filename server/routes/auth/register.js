@@ -28,13 +28,13 @@ router.post("/register", async (req, res) => {
     }
 
     if (!password.match(validPasswordExp)) {
-      return res
-        .status(401)
-        .send([
+      return res.status(401).send({
+        passwordRules: [
           "include both upper and lowercase characters",
           "include at least one number",
           "be atleast 8 character long"
-        ]);
+        ]
+      });
     }
 
     const bcryptPassword = await bcryptGenerator(password);
