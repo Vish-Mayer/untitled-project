@@ -11,7 +11,6 @@ app.use(cors());
 
 //register and login routes
 
-app.use("/auth", register);
-app.use("/auth", signIn);
+app.use("/auth", [register, signIn]);
 
 export default app;
