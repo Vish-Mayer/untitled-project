@@ -1,4 +1,4 @@
-import connection from "../dbConnection";
+import connection from "../../../dbConnection";
 
 const getUser = async email => {
   const user = await connection.query(
