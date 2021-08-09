@@ -9,7 +9,7 @@ describe("POST/ register", () => {
   });
 
   describe("given a username and a password", () => {
-    it("should respnd with a 200 status code, returns json in the content type header, response contains a userId", async () => {
+    it("should call bcryptGenerator", async () => {
       const response = await request(app)
         .post("/auth/register")
         .send({

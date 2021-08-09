@@ -1,12 +1,11 @@
 import express from "express";
 import dbConnection from "../../dbConnection";
-import jwtGenerator from "./utils/jwtGenerator";
-import bcryptGenerator from "./utils/bcryptGenerator";
-import validateCredentials from "../middleware/validateCredentials";
+import jwtGenerator from "../auth/utils/jwtGenerator";
+import bcryptGenerator from "../auth/utils/bcryptGenerator";
 
 const router = express();
 
-router.post("/register", validateCredentials, async (req, res) => {
+router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
@@ -16,7 +15,7 @@ router.post("/register", validateCredentials, async (req, res) => {
     );
 
     if (user.rows.length !== 0) {
-      return res.status(401).send("User already exists");
+      return res.status(401).send("user already exists");
     }
 
     const bcryptPassword = await bcryptGenerator(password);
