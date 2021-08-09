@@ -3,6 +3,7 @@ import dbConnection from "../../dbConnection";
 import jwtGenerator from "./utils/jwtGenerator";
 import bcryptGenerator from "./utils/bcryptGenerator";
 import validateCredentials from "../middleware/validateCredentials";
+import getUser from "../../database-queries/getUser";
 
 const router = express();
 
@@ -10,13 +11,10 @@ router.post("/register", validateCredentials, async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    const user = await dbConnection.query(
-      "SELECT * FROM users WHERE user_email = $1",
-      [email]
-    );
+    const user = await getUser(email);
 
     if (user.rows.length !== 0) {
-      return res.status(401).send("User already exists");
+      return res.status(401).send({ msg: "User already exists" });
     }
 
     const bcryptPassword = await bcryptGenerator(password);

@@ -5,12 +5,12 @@ const validPasswordExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/;
 const validCredentials = (req, res, next) => {
   const { name, email, password } = req.body;
   if (![name, email, password].every(Boolean)) {
-    return res.status(400).send("Missing Credentials");
+    return res.status(400).send({ msg: "Missing Credentials" });
   } else if (!email.match(validEmailExp)) {
-    return res.status(401).send("Please enter a valid email address");
+    return res.status(401).send({ msg: "Please enter a valid email address" });
   } else if (!password.match(validPasswordExp)) {
     return res.status(401).send({
-      passwordMessage: "Your Password needs to",
+      msg: "Your Password needs to",
       passwordRules: [
         "include both upper and lowercase characters",
         "include at least one number",
