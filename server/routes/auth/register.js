@@ -1,6 +1,6 @@
 import express from "express";
 import jwtGenerator from "./utils/jwtGenerator";
-import validateCredentials from "../middleware/validateCredentials";
+import validateCredentials from "../../middleware/validateCredentials";
 import getUser from "./database-queries/getUser";
 import createUser from "./database-queries/createUser";
 
