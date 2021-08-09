@@ -1,10 +1,12 @@
 process.env.NODE_ENV = "test";
+import app from "../../../app";
 import request from "supertest";
 import dbConnection from "../../../dbConnection";
-import app from "../../../app";
+import bcrypt from "bcrypt";
+import createUser from "../database-queries/createUser";
 
 describe("POST/ register", () => {
-  beforeAll(async () => {
+  afterEach(async () => {
     await dbConnection.query("TRUNCATE TABLE users");
   });
 
@@ -24,16 +26,13 @@ describe("POST/ register", () => {
     });
 
     it("correctly stores user_name, email, and encryted password into the database", async () => {
-      await request(app)
-        .post("/auth/register")
-        .send({
-          name: "name",
-          email: "validmail@mail.com",
-          password: "Validpassword1"
-        });
-      const database = await dbConnection.query("SELECT * FROM users");
-      expect(database.rows[0].user_name).toEqual("name");
-      expect(database.rows[0].user_email).toEqual("validmail@mail.com");
+      await createUser("name", "validmail2@mail.com", "Validpassword2");
+      const user = await dbConnection.query("SELECT * FROM users");
+      expect(user.rows[0].user_name).toEqual("name");
+      expect(user.rows[0].user_email).toEqual("validmail2@mail.com");
+      expect(
+        await bcrypt.compare("Validpassword2", user.rows[0].user_password)
+      ).toEqual(true);
     });
   });
 
@@ -59,7 +58,7 @@ describe("POST/ register", () => {
   });
 
   describe("invaild email or password", () => {
-    it("should respnd with a 401 status code", async () => {
+    it("should respond with a 401 status code", async () => {
       const bodyData = [
         { name: "name", email: "invalid-email", password: "invalid-password" },
         {
