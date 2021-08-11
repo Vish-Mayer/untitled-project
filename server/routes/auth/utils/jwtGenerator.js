@@ -4,7 +4,7 @@ dotenv.config();
 
 const jwtGenerator = user_id => {
   const payload = {
-    user: user_id
+    user_id: user_id
   };
   return jsonwebtoken.sign(payload, process.env.jwtSecret, {
     expiresIn: "1hr"

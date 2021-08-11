@@ -1,9 +1,10 @@
 process.env.NODE_ENV = "test";
-import app from "../../../app";
+import app from "../../../app.js";
 import request from "supertest";
-import dbConnection from "../../../dbConnection";
+import dbConnection from "../../../dbConnection.js";
 import bcrypt from "bcrypt";
-import createUser from "../database-queries/createUser";
+import { activeUser } from "../database-queries/createTestUser.js";
+import getUserByMail from "../database-queries/user.js";
 
 describe("POST/ register", () => {
   afterEach(async () => {
@@ -11,28 +12,30 @@ describe("POST/ register", () => {
   });
 
   describe("given a username and a password", () => {
-    it("should call bcryptGenerator", async () => {
+    it("should respond with a status 200 and return a json object", async () => {
       const response = await request(app)
         .post("/auth/register")
         .send({
-          name: "name",
-          email: "validmail@mail.com",
-          password: "Validpassword1"
+          name: "user0",
+          email: "user0@mail.com",
+          password: "Password123"
         });
       expect(response.statusCode).toBe(200);
       expect(response.headers["content-type"]).toEqual(
         expect.stringContaining("json")
       );
     });
+  });
 
+  describe("database entry", () => {
     it("correctly stores user_name, email, and encryted password into the database", async () => {
-      await createUser("name", "validmail2@mail.com", "Validpassword2");
-      const user = await dbConnection.query("SELECT * FROM users");
-      expect(user.rows[0].user_verified).toEqual(false);
-      expect(user.rows[0].user_name).toEqual("name");
-      expect(user.rows[0].user_email).toEqual("validmail2@mail.com");
+      await activeUser("user1", "user1@mail.com", "Password123");
+      const user = await getUserByMail("user1@mail.com");
+
+      expect(user.rows[0].user_name).toEqual("user1");
+      expect(user.rows[0].user_email).toEqual("user1@mail.com");
       expect(
-        await bcrypt.compare("Validpassword2", user.rows[0].user_password)
+        await bcrypt.compare("Password123", user.rows[0].user_password)
       ).toEqual(true);
     });
   });

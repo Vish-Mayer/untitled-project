@@ -1,8 +1,8 @@
 import express from "express";
-import jwtGenerator from "./utils/jwtGenerator";
-import validateCredentials from "../../middleware/validateCredentials";
-import getUser from "./database-queries/getUser";
-import createUser from "./database-queries/createUser";
+import jwtGenerator from "./utils/jwtGenerator.js";
+import validateCredentials from "../../middleware/validateCredentials.js";
+import getUserByMail from "./database-queries/user.js";
+import createUser from "./database-queries/createUser.js";
 
 const router = express();
 
@@ -10,7 +10,7 @@ router.post("/register", validateCredentials, async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    const user = await getUser(email);
+    const user = await getUserByMail(email);
 
     if (user.rows.length !== 0) {
       return res.status(401).send({ msg: "User already exists" });

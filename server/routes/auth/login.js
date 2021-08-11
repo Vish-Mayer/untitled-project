@@ -1,7 +1,7 @@
 import express from "express";
-import getUser from "./database-queries/getUser";
+import getUser from "./database-queries/user.js";
 import bcrypt from "bcrypt";
-import jwtGenerator from "./utils/jwtGenerator";
+import jwtGenerator from "./utils/jwtGenerator.js";
 
 const router = express();
 
@@ -22,6 +22,10 @@ router.post("/login", async (req, res) => {
 
     if (!validPassword) {
       return res.status(401).json("Incorrect Email or Password");
+    }
+
+    if (user.rows[0].user_verified === false) {
+      return res.status(401).json("Please verify your email");
     }
 
     const token = jwtGenerator(user.rows[0].user_id);

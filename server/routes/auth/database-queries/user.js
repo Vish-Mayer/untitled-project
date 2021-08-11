@@ -1,6 +1,6 @@
-import connection from "../../../dbConnection";
+import connection from "../../../dbConnection.js";
 
-const getUser = async email => {
+export const getUserByMail = async email => {
   const user = await connection.query(
     `SELECT * 
       FROM users 
@@ -10,4 +10,4 @@ const getUser = async email => {
   return user;
 };
 
-export default getUser;
+export default getUserByMail;
