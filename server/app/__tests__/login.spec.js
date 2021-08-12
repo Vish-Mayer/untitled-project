@@ -1,9 +1,8 @@
 process.env.NODE_ENV = "test";
 import request from "supertest";
-import dbConnection from "../../../dbConnection.js";
-import createUser from "../database-queries/createUser.js";
-import { activeUser } from "../database-queries/createTestUser.js";
-import app from "../../../app";
+import dbConnection from "../dbConnection.js";
+import app from "../app";
+import { createUser } from "../models/user.js";
 
 describe("POST/ login", () => {
   describe("given an incorrect email or password", () => {
@@ -26,7 +25,10 @@ describe("POST/ login", () => {
 
   describe("given a correct email or password", () => {
     it("should respond with a 200 status code if user is verified,", async () => {
-      await activeUser("user2", "user2@mail.com", "Password123");
+      await createUser("user2", "user2@mail.com", "Password123");
+      await dbConnection.query(
+        "UPDATE users SET user_verified = TRUE WHERE user_email = 'user2@mail.com'"
+      );
       const response = await request(app)
         .post("/auth/login")
         .send({

@@ -1,10 +1,9 @@
 process.env.NODE_ENV = "test";
-import app from "../../../app.js";
+import app from "../app.js";
 import request from "supertest";
-import dbConnection from "../../../dbConnection.js";
+import dbConnection from "../dbConnection.js";
 import bcrypt from "bcrypt";
-import { activeUser } from "../database-queries/createTestUser.js";
-import getUserByMail from "../database-queries/user.js";
+import { createUser } from "../models/user.js";
 
 describe("POST/ register", () => {
   afterEach(async () => {
@@ -29,14 +28,14 @@ describe("POST/ register", () => {
 
   describe("database entry", () => {
     it("correctly stores user_name, email, and encryted password into the database", async () => {
-      await activeUser("user1", "user1@mail.com", "Password123");
-      const user = await getUserByMail("user1@mail.com");
-
-      expect(user.rows[0].user_name).toEqual("user1");
-      expect(user.rows[0].user_email).toEqual("user1@mail.com");
-      expect(
-        await bcrypt.compare("Password123", user.rows[0].user_password)
-      ).toEqual(true);
+      const user = await createUser("user1", "user1@mail.com", "Password123");
+      expect(user.name).toEqual("user1");
+      expect(user.email).toEqual("user1@mail.com");
+      const verified = await user.verified(user.id);
+      expect(verified).toEqual(false);
+      const password = await user.getPassword(user.id);
+      const verified_password = await bcrypt.compare("Password123", password);
+      expect(verified_password).toEqual(true);
     });
   });
 

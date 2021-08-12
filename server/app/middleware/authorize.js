@@ -1,5 +1,3 @@
-import verifyUser from "../routes/auth/database-queries/verifyUser";
-import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 

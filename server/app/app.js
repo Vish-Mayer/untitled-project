@@ -5,6 +5,7 @@ import register from "./routes/auth/register.js";
 import dbConnection from "./dbConnection.js";
 import login from "./routes/auth/login.js";
 import jwt from "jsonwebtoken";
+// import { verifyAccount } from "./models/createUser.js/";
 doenv.config();
 
 const app = express();
@@ -18,16 +19,14 @@ app.use(cors());
 
 app.use("/auth", [register, login]);
 
-app.get("/auth/confirmation/:token", async (req, res) => {
+app.get("/confirmation/:token", async (req, res) => {
   try {
     const decoded = jwt.verify(req.params.token, process.env.jwtSecret);
-    console.log(decoded);
     await dbConnection.query(
-      "UPDATE users SET user_verified = TRUE where user_id = $1",
+      "UPDATE users SET user_verified = TRUE WHERE user_id = $1",
       [decoded.user_id]
     );
-    const user = await getUserByMail(decoded.user_id);
-    res.send(`${user.rows[0].user_name} has been verified`);
+    res.send("account has been verified");
   } catch (error) {
     res.send(error);
   }
