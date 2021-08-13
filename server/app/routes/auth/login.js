@@ -20,7 +20,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ msg: "Incorrect Email or Password" });
     }
 
-    const verified = await authenticatedUser.verified(authenticatedUser.id);
+    const verified = await authenticatedUser.verified();
 
     if (!verified) {
       return res.status(401).json({
@@ -33,7 +33,6 @@ router.post("/login", async (req, res) => {
 
     res.json({ token });
   } catch (error) {
-    console.error(error.message);
     res.sendStatus(500).json("Server Error");
     return;
   }

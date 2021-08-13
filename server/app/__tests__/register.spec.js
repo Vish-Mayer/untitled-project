@@ -6,37 +6,8 @@ import bcrypt from "bcrypt";
 import { createUser } from "../models/user.js";
 
 describe("POST/ register", () => {
-  afterEach(async () => {
+  beforeEach(async () => {
     await dbConnection.query("TRUNCATE TABLE users");
-  });
-
-  describe("given a username and a password", () => {
-    it("should respond with a status 200 and return a json object", async () => {
-      const response = await request(app)
-        .post("/auth/register")
-        .send({
-          name: "user0",
-          email: "user0@mail.com",
-          password: "Password123"
-        });
-      expect(response.statusCode).toBe(200);
-      expect(response.headers["content-type"]).toEqual(
-        expect.stringContaining("json")
-      );
-    });
-  });
-
-  describe("database entry", () => {
-    it("correctly stores user_name, email, and encryted password into the database", async () => {
-      const user = await createUser("user1", "user1@mail.com", "Password123");
-      expect(user.name).toEqual("user1");
-      expect(user.email).toEqual("user1@mail.com");
-      const verified = await user.verified(user.id);
-      expect(verified).toEqual(false);
-      const password = await user.getPassword(user.id);
-      const verified_password = await bcrypt.compare("Password123", password);
-      expect(verified_password).toEqual(true);
-    });
   });
 
   describe("when an entry is missing", () => {
@@ -77,6 +48,35 @@ describe("POST/ register", () => {
           .send(body);
         expect(response.statusCode).toBe(401);
       }
+    });
+  });
+
+  describe("given a username and a password", () => {
+    it("should respond with a status 200 and return a json object", async () => {
+      const response = await request(app)
+        .post("/auth/register")
+        .send({
+          name: "user0",
+          email: "user0@mail.com",
+          password: "Password123"
+        });
+      expect(response.statusCode).toBe(200);
+      expect(response.headers["content-type"]).toEqual(
+        expect.stringContaining("json")
+      );
+    });
+  });
+
+  describe("database entry", () => {
+    it("correctly stores user_name, email, and encryted password into the database", async () => {
+      const user = await createUser("user1", "user1@mail.com", "Password123");
+      expect(user.name).toEqual("user1");
+      expect(user.email).toEqual("user1@mail.com");
+      const verified = await user.verified(user.id);
+      expect(verified).toEqual(false);
+      const password = await user.getPassword();
+      const verified_password = await bcrypt.compare("Password123", password);
+      expect(verified_password).toEqual(true);
     });
   });
 });

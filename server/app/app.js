@@ -19,7 +19,7 @@ app.use(cors());
 
 app.use("/auth", [register, login]);
 
-app.get("/confirmation/:token", async (req, res) => {
+app.get("/auth/confirmation/:token", async (req, res) => {
   try {
     const decoded = jwt.verify(req.params.token, process.env.jwtSecret);
     await dbConnection.query(

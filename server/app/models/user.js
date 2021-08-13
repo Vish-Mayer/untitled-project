@@ -3,27 +3,27 @@ import bcryptGenerator from "../utils/bcryptGenerator.js";
 import bcrypt from "bcrypt";
 import { conditionalExpression } from "@babel/types";
 
-class User {
+export class User {
   constructor(id, name, email) {
     this.id = id;
     this.name = name;
     this.email = email;
   }
-  getPassword = async user_id => {
+  getPassword = async () => {
     const user = await connection.query(
       `SELECT user_password 
         FROM users 
         WHERE user_id = $1`,
-      [user_id]
+      [this.id]
     );
     return user.rows[0].user_password;
   };
-  verified = async user_id => {
+  verified = async () => {
     const user = await connection.query(
       `SELECT user_verified 
         FROM users 
         WHERE user_id = $1`,
-      [user_id]
+      [this.id]
     );
     return user.rows[0].user_verified;
   };
@@ -79,14 +79,4 @@ export const authenticateUser = async (email, password) => {
     );
     return new_user;
   }
-};
-
-export const verifyAccount = async user_id => {
-  const user = await connection.query(
-    `SELECT * 
-      FROM users 
-      WHERE user_id = $1`,
-    [user_id]
-  );
-  return user;
 };

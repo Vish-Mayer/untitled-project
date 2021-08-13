@@ -2,6 +2,7 @@ import express from "express";
 import jwtGenerator from "../../utils/jwtGenerator.js";
 import validateCredentials from "../../middleware/validateCredentials.js";
 import { alreadyExists, createUser } from "../../models/user.js";
+import sendVerification from "../../utils/nodeMailer.js";
 
 const router = express();
 
@@ -19,7 +20,9 @@ router.post("/register", validateCredentials, async (req, res) => {
 
     const token = jwtGenerator(newUser.id);
 
-    res.json({ token });
+    await sendVerification(newUser.email, token);
+
+    res.json(`A verification link has been sent to ${newUser.email}`);
   } catch (error) {
     console.error(error.message);
     res.sendStatus(500).send("Server Error");
