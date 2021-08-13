@@ -66,17 +66,4 @@ describe("POST/ register", () => {
       );
     });
   });
-
-  describe("database entry", () => {
-    it("correctly stores user_name, email, and encryted password into the database", async () => {
-      const user = await createUser("user1", "user1@mail.com", "Password123");
-      expect(user.name).toEqual("user1");
-      expect(user.email).toEqual("user1@mail.com");
-      const verified = await user.verified(user.id);
-      expect(verified).toEqual(false);
-      const password = await user.getPassword();
-      const verified_password = await bcrypt.compare("Password123", password);
-      expect(verified_password).toEqual(true);
-    });
-  });
 });

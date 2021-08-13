@@ -5,6 +5,7 @@ import register from "./routes/auth/register.js";
 import dbConnection from "./dbConnection.js";
 import login from "./routes/auth/login.js";
 import jwt from "jsonwebtoken";
+import authorise from "./middleware/authorize.js";
 // import { verifyAccount } from "./models/createUser.js/";
 doenv.config();
 

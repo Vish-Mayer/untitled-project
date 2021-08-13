@@ -22,7 +22,8 @@ router.post("/register", validateCredentials, async (req, res) => {
 
     await sendVerification(newUser.email, token);
 
-    res.json(`A verification link has been sent to ${newUser.email}`);
+    // res.json(`A verification link has been sent to ${newUser.email}`);
+    res.json({ token });
   } catch (error) {
     console.error(error.message);
     res.sendStatus(500).send("Server Error");

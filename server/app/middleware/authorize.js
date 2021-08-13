@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-export default async function(req, res, next) {
+const authorize = async (req, res, next) => {
   const token = req.params.token;
   // console.log(token);
 
@@ -14,4 +14,5 @@ export default async function(req, res, next) {
   } catch (err) {
     res.status(401).json({ msg: "Token is not valid" });
   }
-}
+};
+export default authorize;

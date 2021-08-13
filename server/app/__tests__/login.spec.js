@@ -43,7 +43,7 @@ describe("POST/ login", () => {
       );
     });
 
-    it("should respond with a 401 status code if user is not verified,", async () => {
+    it("should respond with a 401 status code if a user is verified,", async () => {
       await createUser("user2", "user2@mail.com", "Password123");
       await dbConnection.query(
         "UPDATE users SET user_verified = TRUE WHERE user_email = 'user2@mail.com'"
