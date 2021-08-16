@@ -80,3 +80,19 @@ export const authenticateUser = async (email, password) => {
     return new_user;
   }
 };
+
+export const getUserById = async id => {
+  const user = await connection.query(
+    `SELECT * 
+      FROM users 
+      WHERE user_id = $1`,
+    [id]
+  );
+
+  const new_user = new User(
+    user.rows[0].user_id,
+    user.rows[0].user_name,
+    user.rows[0].user_email
+  );
+  return new_user;
+};

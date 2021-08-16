@@ -1,12 +1,14 @@
 import doenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import register from "./routes/auth/register.js";
 import dbConnection from "./dbConnection.js";
 import login from "./routes/auth/login.js";
+import verify from "./routes/auth/verify.js";
+import register from "./routes/auth/register.js";
 import jwt from "jsonwebtoken";
-import authorise from "./middleware/authorize.js";
-// import { verifyAccount } from "./models/createUser.js/";
+
+import dashboard from "./routes/dashboard.js";
+
 doenv.config();
 
 const app = express();
@@ -18,7 +20,7 @@ app.use(cors());
 
 //register and login routes
 
-app.use("/auth", [register, login]);
+app.use("/auth", [register, login, verify]);
 
 app.get("/auth/confirmation/:token", async (req, res) => {
   try {
@@ -34,4 +36,5 @@ app.get("/auth/confirmation/:token", async (req, res) => {
   return;
 });
 
+app.use("/dashboard", dashboard);
 export default app;
