@@ -1,6 +1,5 @@
 import express from "express";
 import authorize from "../middleware/authorize.js";
-import dbconnection from "../dbConnection.js";
 import { getUserById } from "../models/user.js";
 
 const router = express();

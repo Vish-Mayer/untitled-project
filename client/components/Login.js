@@ -1,7 +1,8 @@
 import React from "react";
+import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
 
 const Login = () => {
-  return <h1>Login</h1>;
+  return <Text>Login</Text>;
 };
 
 export default Login;

@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
 import {
-  BrowserRouter as Router,
+  MemoryRouter as Router,
   Switch,
   Route,
   Redirect
@@ -13,25 +13,47 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 
 export default function App() {
-  const [counter, setCounter] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   return (
     <SafeAreaView style={styles.container}>
       <Router>
-        <div className="container">
+        <View className="container">
           <Switch>
-            <Route exact path="/login" render={props => <Login {...props} />} />
             <Route
               exact
-              path="/register"
-              render={props => <Register {...props} />}
+              path="/login"
+              render={props =>
+                !isAuthenticated ? (
+                  <Login {...props} />
+                ) : (
+                  <Redirect to="/dashboard" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/"
+              render={props =>
+                !isAuthenticated ? (
+                  <Register {...props} />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
             />
             <Route
               exact
               path="/dashboard"
-              render={props => <Dashboard {...props} />}
+              render={props =>
+                isAuthenticated ? (
+                  <Dashboard {...props} />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
             />
           </Switch>
-        </div>
+        </View>
       </Router>
     </SafeAreaView>
   );

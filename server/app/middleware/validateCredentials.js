@@ -12,9 +12,10 @@ const validCredentials = (req, res, next) => {
     } else if (!email.match(validEmailExp)) {
       return res
         .status(401)
-        .send({ msg: "Please enter a valid email address" });
+        .send({ type: "email", msg: "Please enter a valid email address" });
     } else if (!password.match(validPasswordExp)) {
       return res.status(401).send({
+        type: "password",
         msg: "Your Password needs to",
         passwordRules: [
           "include both upper and lowercase characters",
