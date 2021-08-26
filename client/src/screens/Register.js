@@ -5,32 +5,39 @@ import Unorderedlist from "react-native-unordered-list";
 import { useRegisterAPI } from "../hooks/useRegisterAPI";
 
 const Register = () => {
-  const { setBody, error, success } = useRegisterAPI(null);
+  const { setBody, response } = useRegisterAPI(null);
 
-  const handleFormError = () => {
-    if (error.type === "password") {
-      const rules = error.passwordRules;
-      const passwordMsg = <Text key={0}>{error.msg}: </Text>;
+  const handleFormResponse = () => {
+    if (response.type === "password_error") {
+      const rules = response.passwordRules;
+      const passwordMsg = (
+        <Text style={{ color: "red" }} key={0}>
+          {response.msg}:{" "}
+        </Text>
+      );
       const passwordRules = rules.map(item => (
         <Unorderedlist key={item}>
           <Text>{item}</Text>
         </Unorderedlist>
       ));
       return [passwordMsg, passwordRules];
+    } else if (response.type === "success") {
+      return <Text style={{ color: "green" }}>{response.msg}</Text>;
     } else {
-      return <Text>{error.msg}</Text>;
+      return <Text style={{ color: "red" }}>{response.msg}</Text>;
     }
   };
 
   return (
     <View>
-      {error && handleFormError()}
-      {success && success}
+      {response && handleFormResponse()}
+
       <Text> Register </Text>
       <Formik
         initialValues={{ name: "", email: "", password: "" }}
-        onSubmit={values => {
+        onSubmit={(values, { resetForm }) => {
           setBody(values);
+          resetForm();
         }}
       >
         {props => (
