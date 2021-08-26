@@ -8,9 +8,9 @@ import {
   Redirect
 } from "react-router-dom";
 
-import Dashboard from "./components/Dashboard";
-import Register from "./components/Register";
-import Login from "./components/Login";
+import Dashboard from "./src/screens/Dashboard";
+import Register from "./src/screens/Register";
+import Login from "./src/screens/Login";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
