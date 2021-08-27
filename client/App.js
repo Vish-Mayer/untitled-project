@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+import * as Font from "expo-font";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
 import {
@@ -7,56 +7,73 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
-
+import AppLoading from "expo-app-loading";
 import Dashboard from "./src/screens/Dashboard";
 import Register from "./src/screens/Register";
 import Login from "./src/screens/Login";
 
+const getFonts = () =>
+  Font.loadAsync({
+    "nunito-regular": require("./assets/fonts/Nunito-Regular.ttf"),
+    "nunito-bold": require("./assets/fonts/Nunito-Bold.ttf")
+  });
 export default function App() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  return (
-    <SafeAreaView style={styles.container}>
-      <Router>
-        <View className="container">
-          <Switch>
-            <Route
-              exact
-              path="/login"
-              render={props =>
-                !isAuthenticated ? (
-                  <Login {...props} />
-                ) : (
-                  <Redirect to="/dashboard" />
-                )
-              }
-            />
-            <Route
-              exact
-              path="/"
-              render={props =>
-                !isAuthenticated ? (
-                  <Register {...props} />
-                ) : (
-                  <Redirect to="/login" />
-                )
-              }
-            />
-            <Route
-              exact
-              path="/dashboard"
-              render={props =>
-                isAuthenticated ? (
-                  <Dashboard {...props} />
-                ) : (
-                  <Redirect to="/login" />
-                )
-              }
-            />
-          </Switch>
-        </View>
-      </Router>
-    </SafeAreaView>
-  );
+
+  if (fontsLoaded) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Router>
+          <View className="container">
+            <Switch>
+              <Route
+                exact
+                path="/login"
+                render={props =>
+                  !isAuthenticated ? (
+                    <Login {...props} />
+                  ) : (
+                    <Redirect to="/dashboard" />
+                  )
+                }
+              />
+              <Route
+                exact
+                path="/"
+                render={props =>
+                  !isAuthenticated ? (
+                    <Register {...props} />
+                  ) : (
+                    <Redirect to="/login" />
+                  )
+                }
+              />
+              <Route
+                exact
+                path="/dashboard"
+                render={props =>
+                  isAuthenticated ? (
+                    <Dashboard {...props} />
+                  ) : (
+                    <Redirect to="/login" />
+                  )
+                }
+              />
+            </Switch>
+          </View>
+        </Router>
+      </SafeAreaView>
+    );
+  } else {
+    return (
+      <AppLoading
+        startAsync={getFonts}
+        onFinish={() => setFontsLoaded(true)}
+        onError={console.warn}
+      />
+    );
+  }
 }
 
 const styles = StyleSheet.create({

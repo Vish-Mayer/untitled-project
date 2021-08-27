@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, TextInput, Button, StyleSheet } from "react-native";
-import { Formik } from "formik";
 import Unorderedlist from "react-native-unordered-list";
 import { useRegisterAPI } from "../hooks/useRegisterAPI";
 
 const Register = () => {
-  const { setBody, response } = useRegisterAPI(null);
+  const defaultValues = { name: "", email: "", password: "" };
+  const [inputs, setInputs] = useState(defaultValues);
+  const { name, email, password } = inputs;
+  const { setBody, response, success } = useRegisterAPI(null);
 
   const handleFormResponse = () => {
     if (response.type === "password_error") {
@@ -28,42 +30,58 @@ const Register = () => {
     }
   };
 
+  const handleSubmit = e => {
+    e.preventDefault();
+    setBody(inputs);
+  };
+
+  useEffect(() => {
+    setInputs(defaultValues);
+    console.log(success);
+  }, [success]);
+
   return (
-    <View>
+    <View style={styles.container}>
       {response && handleFormResponse()}
+      <Text style={styles.titleText}> Register </Text>
 
-      <Text> Register </Text>
-      <Formik
-        initialValues={{ name: "", email: "", password: "" }}
-        onSubmit={(values, { resetForm }) => {
-          setBody(values);
-          resetForm();
-        }}
-      >
-        {props => (
-          <View>
-            <TextInput
-              placeholder="Username"
-              onChangeText={props.handleChange("name")}
-              value={props.values.name}
-            />
-            <TextInput
-              placeholder="Email"
-              onChangeText={props.handleChange("email")}
-              value={props.values.email}
-            />
-            <TextInput
-              placeholder="Password"
-              onChangeText={props.handleChange("password")}
-              value={props.values.password}
-            />
-
-            <Button title="submit" color="green" onPress={props.handleSubmit} />
-          </View>
-        )}
-      </Formik>
+      <View>
+        <TextInput
+          placeholder="name"
+          value={name}
+          onChangeText={text => {
+            setInputs({ ...inputs, name: text });
+          }}
+        />
+        <TextInput
+          placeholder="Email"
+          value={email}
+          onChangeText={text => {
+            setInputs({ ...inputs, email: text });
+          }}
+        />
+        <TextInput
+          secureTextEntry={true}
+          value={password}
+          placeholder="Password"
+          onChangeText={text => {
+            setInputs({ ...inputs, password: text });
+          }}
+        />
+        <Button title="Register" onPress={handleSubmit} />
+      </View>
     </View>
   );
 };
 
 export default Register;
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 24
+  },
+  titleText: {
+    fontFamily: "nunito-bold",
+    fontSize: 18
+  }
+});

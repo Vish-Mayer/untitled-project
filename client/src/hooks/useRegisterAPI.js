@@ -5,6 +5,7 @@ import { useIsMount } from "./useIsMount";
 const useRegisterAPI = () => {
   const [body, setBody] = useState(null);
   const [response, setResponse] = useState(null);
+  const [success, setSuccess] = useState(false);
   const isMount = useIsMount();
 
   useEffect(() => {
@@ -21,6 +22,9 @@ const useRegisterAPI = () => {
           );
           const parsedResponse = await response.json();
           setResponse(parsedResponse);
+          if (response.status === 200) {
+            setSuccess(true);
+          }
         } catch (error) {
           console.log(error.message);
         }
@@ -31,7 +35,8 @@ const useRegisterAPI = () => {
 
   return {
     setBody,
-    response
+    response,
+    success
   };
 };
 export { useRegisterAPI };
