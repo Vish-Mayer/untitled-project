@@ -1,6 +1,6 @@
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
+import { StyleSheet, View, SafeAreaView } from "react-native";
 import {
   MemoryRouter as Router,
   Switch,
@@ -11,6 +11,7 @@ import AppLoading from "expo-app-loading";
 import Dashboard from "./src/screens/Dashboard";
 import Register from "./src/screens/Register";
 import Login from "./src/screens/Login";
+import { globalStyles } from "./src/styles/global";
 
 const getFonts = () =>
   Font.loadAsync({
@@ -23,7 +24,7 @@ export default function App() {
 
   if (fontsLoaded) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView>
         <Router>
           <View className="container">
             <Switch>
@@ -75,12 +76,3 @@ export default function App() {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});

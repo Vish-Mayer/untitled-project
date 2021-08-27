@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, View, TextInput, Button, StyleSheet } from "react-native";
 import Unorderedlist from "react-native-unordered-list";
 import { useRegisterAPI } from "../hooks/useRegisterAPI";
+import { globalStyles } from "../styles/global";
 
 const Register = () => {
   const defaultValues = { name: "", email: "", password: "" };
@@ -13,20 +14,20 @@ const Register = () => {
     if (response.type === "password_error") {
       const rules = response.passwordRules;
       const passwordMsg = (
-        <Text style={{ color: "red" }} key={0}>
+        <Text style={globalStyles.errorMsg} key={0}>
           {response.msg}:{" "}
         </Text>
       );
       const passwordRules = rules.map(item => (
-        <Unorderedlist key={item}>
-          <Text>{item}</Text>
+        <Unorderedlist bulletUnicode={0x2023} key={item}>
+          <Text style={globalStyles.passwordMsg}>{item}</Text>
         </Unorderedlist>
       ));
       return [passwordMsg, passwordRules];
     } else if (response.type === "success") {
-      return <Text style={{ color: "green" }}>{response.msg}</Text>;
+      return <Text style={globalStyles.successMsg}>{response.msg}</Text>;
     } else {
-      return <Text style={{ color: "red" }}>{response.msg}</Text>;
+      return <Text style={globalStyles.errorMsg}>{response.msg}</Text>;
     }
   };
 
@@ -41,19 +42,21 @@ const Register = () => {
   }, [success]);
 
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       {response && handleFormResponse()}
-      <Text style={styles.titleText}> Register </Text>
+      <Text style={globalStyles.titleText}> Register </Text>
 
       <View>
         <TextInput
-          placeholder="name"
+          style={globalStyles.input}
+          placeholder="Name"
           value={name}
           onChangeText={text => {
             setInputs({ ...inputs, name: text });
           }}
         />
         <TextInput
+          style={globalStyles.input}
           placeholder="Email"
           value={email}
           onChangeText={text => {
@@ -61,6 +64,7 @@ const Register = () => {
           }}
         />
         <TextInput
+          style={globalStyles.input}
           secureTextEntry={true}
           value={password}
           placeholder="Password"
@@ -75,13 +79,3 @@ const Register = () => {
 };
 
 export default Register;
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 24
-  },
-  titleText: {
-    fontFamily: "nunito-bold",
-    fontSize: 18
-  }
-});
