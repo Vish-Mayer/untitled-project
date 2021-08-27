@@ -13,17 +13,17 @@ const Register = () => {
   const handleFormResponse = () => {
     if (response.type === "password_error") {
       const rules = response.passwordRules;
-      const passwordMsg = (
-        <Text style={globalStyles.errorMsg} key={0}>
-          {response.msg}:{" "}
-        </Text>
-      );
+      const passwordMsg = <Text key={0}>{response.msg}: </Text>;
       const passwordRules = rules.map(item => (
         <Unorderedlist bulletUnicode={0x2023} key={item}>
-          <Text style={globalStyles.passwordMsg}>{item}</Text>
+          <Text>{item}</Text>
         </Unorderedlist>
       ));
-      return [passwordMsg, passwordRules];
+      return (
+        <View style={globalStyles.passwordMsg}>
+          {[passwordMsg, passwordRules]}
+        </View>
+      );
     } else if (response.type === "success") {
       return <Text style={globalStyles.successMsg}>{response.msg}</Text>;
     } else {
@@ -38,7 +38,6 @@ const Register = () => {
 
   useEffect(() => {
     setInputs(defaultValues);
-    console.log(success);
   }, [success]);
 
   return (

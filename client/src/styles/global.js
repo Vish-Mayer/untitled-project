@@ -15,15 +15,18 @@ export const globalStyles = StyleSheet.create({
   },
   errorMsg: {
     fontFamily: "nunito-bold",
+    padding: 10,
     backgroundColor: "#ffcccb"
   },
 
   successMsg: {
     fontFamily: "nunito-bold",
+    padding: 10,
     backgroundColor: "#90EE90"
   },
 
   passwordMsg: {
+    padding: 10,
     backgroundColor: "#ffcccb",
     borderColor: "#ddd"
   },
