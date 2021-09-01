@@ -20,7 +20,7 @@ const Register = () => {
         </Unorderedlist>
       ));
       return (
-        <View style={globalStyles.passwordMsg}>
+        <View style={globalStyles.errorMsg}>
           {[passwordMsg, passwordRules]}
         </View>
       );
@@ -43,7 +43,6 @@ const Register = () => {
   return (
     <View style={globalStyles.container}>
       {response && handleFormResponse()}
-      <Text style={globalStyles.titleText}> Register </Text>
 
       <View>
         <TextInput

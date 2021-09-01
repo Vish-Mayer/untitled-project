@@ -1,8 +1,17 @@
 import React from "react";
-import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
+import { Text, View, Button } from "react-native";
 
-const Login = () => {
-  return <Text>Login</Text>;
+const Login = ({ navigation }) => {
+  return (
+    <View>
+      <View>
+        <Button
+          title="Don't have an account? Sign up here"
+          onPress={() => navigation.navigate("Register")}
+        />
+      </View>
+    </View>
+  );
 };
 
 export default Login;

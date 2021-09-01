@@ -1,12 +1,7 @@
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { StyleSheet, View, SafeAreaView } from "react-native";
-import {
-  MemoryRouter as Router,
-  Switch,
-  Route,
-  Redirect
-} from "react-router-dom";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AppLoading from "expo-app-loading";
 import Dashboard from "./src/screens/Dashboard";
 import Register from "./src/screens/Register";
@@ -18,53 +13,26 @@ const getFonts = () =>
     "nunito-regular": require("./assets/fonts/Nunito-Regular.ttf"),
     "nunito-bold": require("./assets/fonts/Nunito-Bold.ttf")
   });
+
+const Stack = createNativeStackNavigator();
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   if (fontsLoaded) {
     return (
-      <SafeAreaView>
-        <Router>
-          <View className="container">
-            <Switch>
-              <Route
-                exact
-                path="/login"
-                render={props =>
-                  !isAuthenticated ? (
-                    <Login {...props} />
-                  ) : (
-                    <Redirect to="/dashboard" />
-                  )
-                }
-              />
-              <Route
-                exact
-                path="/"
-                render={props =>
-                  !isAuthenticated ? (
-                    <Register {...props} />
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
-              />
-              <Route
-                exact
-                path="/dashboard"
-                render={props =>
-                  isAuthenticated ? (
-                    <Dashboard {...props} />
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
-              />
-            </Switch>
-          </View>
-        </Router>
-      </SafeAreaView>
+      <NavigationContainer>
+        {!isAuthenticated ? (
+          <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
+          </Stack.Navigator>
+        ) : (
+          <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Dashboard" component={Dashboard} />
+          </Stack.Navigator>
+        )}
+      </NavigationContainer>
     );
   } else {
     return (
