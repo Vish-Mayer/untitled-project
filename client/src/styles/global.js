@@ -2,9 +2,10 @@ import { StyleSheet } from "react-native";
 
 export const globalStyles = StyleSheet.create({
   container: {
-    position: "relative",
-    padding: 24,
-    flex: 0
+    flex: 1,
+    padding: 20,
+    paddingTop: 100,
+    alignItems: "center"
   },
   titleText: {
     textAlign: "center",
@@ -15,11 +16,7 @@ export const globalStyles = StyleSheet.create({
   },
   errorMsg: {
     fontFamily: "nunito-bold",
-    padding: 10,
-    backgroundColor: "#ffcccb",
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 6
+    color: "red"
   },
 
   successMsg: {
@@ -33,10 +30,47 @@ export const globalStyles = StyleSheet.create({
     lineHeight: 20
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    padding: 10,
-    fontSize: 30,
-    borderRadius: 6
+    backgroundColor: "#e8e8e8",
+    width: "100%",
+    padding: 20,
+    borderRadius: 8
+  },
+  filledButton: {
+    backgroundColor: "purple",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    borderRadius: 8
+  },
+
+  textButton: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    borderRadius: 8
+  },
+
+  btnText: {
+    fontFamily: "nunito-bold",
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16
+  },
+
+  textBtnText: {
+    fontFamily: "nunito-regular",
+    color: "black",
+    fontWeight: "500",
+    fontSize: 14
+  },
+
+  textButton: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    borderRadius: 8
   }
 });

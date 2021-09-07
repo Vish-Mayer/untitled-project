@@ -3,10 +3,8 @@ import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AppLoading from "expo-app-loading";
-import Dashboard from "./src/screens/Dashboard";
-import Register from "./src/screens/Register";
-import Login from "./src/screens/Login";
-import { globalStyles } from "./src/styles/global";
+import { AuthStackNavigator } from "./src/navigators/AuthStackNavigator";
+import { lightTheme } from "./src/themes/light";
 
 const getFonts = () =>
   Font.loadAsync({
@@ -14,24 +12,22 @@ const getFonts = () =>
     "nunito-bold": require("./assets/fonts/Nunito-Bold.ttf")
   });
 
-const Stack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator();
+const AuthStack = createNativeStackNavigator();
+
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   if (fontsLoaded) {
     return (
-      <NavigationContainer>
-        {!isAuthenticated ? (
-          <Stack.Navigator initialRouteName="Login">
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Register" component={Register} />
-          </Stack.Navigator>
-        ) : (
-          <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Dashboard" component={Dashboard} />
-          </Stack.Navigator>
-        )}
+      <NavigationContainer theme={lightTheme}>
+        <RootStack.Navigator
+          screenOptions={{
+            headerShown: false
+          }}
+        >
+          <RootStack.Screen name={"AuthStack"} component={AuthStackNavigator} />
+        </RootStack.Navigator>
       </NavigationContainer>
     );
   } else {
