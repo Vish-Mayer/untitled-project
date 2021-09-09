@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { loginStyles } from "../styles/local";
 
+import { showMessage } from "react-native-flash-message";
+
 import Heading from "../components/Heading";
 import Input from "../components/Input";
 import FilledButton from "../components/FilledButton";
@@ -35,6 +37,11 @@ const RegistrationScreen = ({ navigation }) => {
         setLoadingMsg("Creating new account");
         await sleep(3000);
         navigation.pop();
+        showMessage({
+          message: "Account created!",
+          description: `${res.msg}`,
+          type: "success"
+        });
       }
 
       if (res.type === "error") {

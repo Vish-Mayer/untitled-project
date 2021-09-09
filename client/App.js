@@ -1,13 +1,17 @@
-import * as Font from "expo-font";
 import React, { useState, useMemo } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AppLoading from "expo-app-loading";
-import { AuthStackNavigator } from "./src/navigators/AuthStackNavigator";
-import { lightTheme } from "./src/themes/light";
-import { AuthContext } from "./src/contexts/AuthContext";
+import * as Font from "expo-font";
+
+import { NavigationContainer } from "@react-navigation/native";
+
 import { LOCALIP, PORT } from "react-native-dotenv";
+
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { AuthStackNavigator } from "./src/navigators/AuthStackNavigator";
+import { AuthContext } from "./src/contexts/AuthContext";
 import sleep from "./src/utils/sleep";
+import FlashMsg from "./src/components/FlashMsg";
+import { lightTheme } from "./src/themes/light";
 
 const getFonts = () =>
   Font.loadAsync({
@@ -83,6 +87,7 @@ export default function App({ navigation }) {
             />
           </RootStack.Navigator>
         </NavigationContainer>
+        <FlashMsg />
       </AuthContext.Provider>
     );
   } else {

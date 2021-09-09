@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { View, Button, TextInput, Text, StyleSheet } from "react-native";
 import { globalStyles } from "../styles/global";
 import { useLoginAPI } from "../hooks/useLoginAPI";
 import Heading from "../components/Heading";
@@ -9,11 +8,14 @@ import FilledButton from "../components/FilledButton";
 import TextButton from "../components/TextButton";
 import Error from "../components/Error";
 import { AuthContext } from "../contexts/AuthContext";
+import AuthContainer from "../components/AuthContainer";
+import FlashMsg from "../components/FlashMsg";
+import FlashMessage from "react-native-flash-message";
 
 const LoginScreen = ({ navigation }) => {
   const { login } = React.useContext(AuthContext);
   return (
-    <View style={globalStyles.container}>
+    <AuthContainer>
       <Heading style={loginStyles.title}>LOGIN</Heading>
       <Error message={""} />
       <Input
@@ -45,7 +47,7 @@ const LoginScreen = ({ navigation }) => {
           })
         }
       />
-    </View>
+    </AuthContainer>
   );
 };
 
