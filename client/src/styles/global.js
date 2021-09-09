@@ -3,8 +3,8 @@ import { StyleSheet } from "react-native";
 export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    paddingTop: 100,
+    padding: 16,
+    paddingTop: 120,
     alignItems: "center"
   },
   titleText: {
@@ -25,10 +25,31 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: "#90EE90"
   },
 
+  overlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+
+  loadingContainer: {
+    backgroundColor: "white",
+    flexDirection: "row",
+    padding: 20,
+    borderRadius: 8
+  },
+
+  loadingText: {
+    marginLeft: 16,
+    fontSize: 18,
+    fontWeight: "500"
+  },
+
   paragraph: {
     marginVertical: 8,
     lineHeight: 20
   },
+
   input: {
     backgroundColor: "#e8e8e8",
     width: "100%",

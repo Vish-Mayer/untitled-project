@@ -8,8 +8,10 @@ import { loginStyles } from "../styles/local";
 import FilledButton from "../components/FilledButton";
 import TextButton from "../components/TextButton";
 import Error from "../components/Error";
+import { AuthContext } from "../contexts/AuthContext";
 
 const LoginScreen = ({ navigation }) => {
+  const { login } = React.useContext(AuthContext);
   return (
     <View style={globalStyles.container}>
       <Heading style={loginStyles.title}>LOGIN</Heading>
@@ -27,7 +29,11 @@ const LoginScreen = ({ navigation }) => {
       <FilledButton
         title={"Login"}
         style={loginStyles.button}
-        onPress={(onPress = () => {})}
+        onPress={
+          (onPress = () => {
+            login();
+          })
+        }
       />
 
       <TextButton

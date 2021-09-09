@@ -11,15 +11,28 @@ import { globalStyles } from "../styles/global";
 import { create } from "xmlbuilder";
 
 const AuthStack = createNativeStackNavigator();
+const LoginStack = createNativeStackNavigator();
 
 export function AuthStackNavigator() {
   return (
     <AuthStack.Navigator
       screenOptions={{
-        headerShown: false
+        headerShown: false,
+        presentation: "card"
       }}
     >
-      <AuthStack.Screen name={"Login"} component={LoginScreen} />
+      <AuthStack.Screen name={"LoginStack"}>
+        {() => (
+          <LoginStack.Navigator
+            screenOptions={{
+              headerShown: false,
+              presentation: "card"
+            }}
+          >
+            <LoginStack.Screen name="Login" component={LoginScreen} />
+          </LoginStack.Navigator>
+        )}
+      </AuthStack.Screen>
       <AuthStack.Screen name={"Register"} component={RegistrationScreen} />
     </AuthStack.Navigator>
   );
