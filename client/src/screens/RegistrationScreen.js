@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
 
 import { AuthContext } from "../contexts/AuthContext";
-
-import { globalStyles } from "../styles/global";
 import { loginStyles } from "../styles/local";
 
 import Heading from "../components/Heading";
@@ -13,27 +10,37 @@ import Error from "../components/Error";
 import IconButton from "../components/IconButton";
 import AuthContainer from "../components/AuthContainer";
 import Loading from "../components/Loading";
+import sleep from "../utils/sleep";
 
 const RegistrationScreen = ({ navigation }) => {
   const { register } = React.useContext(AuthContext);
+
   const defaultState = { name: "", email: "", password: "" };
   const [inputs, setInputs] = useState(defaultState);
-  const [loading, setLoading] = useState(false);
   const { name, email, password } = inputs;
+
+  const [loading, setLoading] = useState(false);
+
+  const [loadingMsg, setLoadingMsg] = useState();
+
   const [error, setError] = useState("");
 
   const handleSubmit = async () => {
     try {
+      setLoadingMsg("Please wait");
       setLoading(true);
       const res = await register(inputs);
       console.log(res);
       if (res.type === "success") {
+        setLoadingMsg("Creating new account");
+        await sleep(3000);
         navigation.pop();
       }
 
       if (res.type === "error") {
         setError([res.msg]);
       }
+      setLoading(false);
     } catch (err) {
       console.log(err);
       setError(err);
@@ -87,7 +94,8 @@ const RegistrationScreen = ({ navigation }) => {
         style={loginStyles.button}
         onPress={handleSubmit}
       />
-      <Loading loading title={"Please wait..."} />
+
+      <Loading loading={loading} title={loadingMsg} />
     </AuthContainer>
   );
 };

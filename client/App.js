@@ -7,6 +7,7 @@ import { AuthStackNavigator } from "./src/navigators/AuthStackNavigator";
 import { lightTheme } from "./src/themes/light";
 import { AuthContext } from "./src/contexts/AuthContext";
 import { LOCALIP, PORT } from "react-native-dotenv";
+import sleep from "./src/utils/sleep";
 
 const getFonts = () =>
   Font.loadAsync({
@@ -33,6 +34,7 @@ export default function App({ navigation }) {
         {
           console.log("register", inputs);
           try {
+            await sleep(1000);
             const response = await fetch(
               `http://${LOCALIP}:${PORT}/auth/register`,
               {
