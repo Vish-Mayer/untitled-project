@@ -13,6 +13,7 @@ import IconButton from "../components/IconButton";
 import AuthContainer from "../components/AuthContainer";
 import Loading from "../components/Loading";
 import sleep from "../utils/sleep";
+import newFlashMessage from "../utils/newFlashMessage";
 
 const RegistrationScreen = ({ navigation }) => {
   const { register } = React.useContext(AuthContext);
@@ -37,11 +38,7 @@ const RegistrationScreen = ({ navigation }) => {
         setLoadingMsg("Creating new account");
         await sleep(3000);
         navigation.pop();
-        showMessage({
-          message: "Account created!",
-          description: `${res.msg}`,
-          type: "success"
-        });
+        newFlashMessage(res.msg, res.description, res.type);
       }
 
       if (res.type === "error") {
