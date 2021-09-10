@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { globalStyles } from "../styles/global";
-import { useLoginAPI } from "../hooks/useLoginAPI";
 import Heading from "../components/Heading";
 import Input from "../components/Input";
 import { loginStyles } from "../styles/local";
@@ -9,8 +7,6 @@ import TextButton from "../components/TextButton";
 import Error from "../components/Error";
 import { AuthContext } from "../contexts/AuthContext";
 import AuthContainer from "../components/AuthContainer";
-import FlashMsg from "../components/FlashMsg";
-import FlashMessage from "react-native-flash-message";
 
 const LoginScreen = ({ navigation }) => {
   const { login } = React.useContext(AuthContext);
@@ -31,21 +27,17 @@ const LoginScreen = ({ navigation }) => {
       <FilledButton
         title={"Login"}
         style={loginStyles.button}
-        onPress={
-          (onPress = () => {
-            login();
-          })
-        }
+        onPress={() => {
+          login();
+        }}
       />
 
       <TextButton
         title={"Don't have an account? Sign up here"}
         style={loginStyles.button}
-        onPress={
-          (onPress = () => {
-            navigation.navigate("Register");
-          })
-        }
+        onPress={() => {
+          navigation.navigate("Register");
+        }}
       />
     </AuthContainer>
   );

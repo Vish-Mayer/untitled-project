@@ -6,7 +6,6 @@ const newFlashMessage = (message = "", description = "", type = "") => {
     description: description,
     type: type
   });
-  // showMessage()
 };
 
 export default newFlashMessage;

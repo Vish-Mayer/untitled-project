@@ -1,9 +1,18 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import { globalStyles } from "../styles/global";
+import { TouchableWithoutFeedback, Keyboard } from "react-native";
 
 const AuthContainer = ({ children }) => {
-  return <View style={globalStyles.container}>{children}</View>;
+  return (
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={globalStyles.container}>{children}</View>
+    </TouchableWithoutFeedback>
+  );
 };
 
 export default AuthContainer;

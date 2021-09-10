@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { AuthContext } from "../contexts/AuthContext";
 import { loginStyles } from "../styles/local";
-
-import { showMessage } from "react-native-flash-message";
 
 import Heading from "../components/Heading";
 import Input from "../components/Input";
@@ -14,6 +12,8 @@ import AuthContainer from "../components/AuthContainer";
 import Loading from "../components/Loading";
 import sleep from "../utils/sleep";
 import newFlashMessage from "../utils/newFlashMessage";
+import PasswordInput from "../components/PasswordInput";
+import passwordIcon from "../utils/passwordIcon";
 
 const RegistrationScreen = ({ navigation }) => {
   const { register } = React.useContext(AuthContext);
@@ -26,6 +26,8 @@ const RegistrationScreen = ({ navigation }) => {
 
   const [loadingMsg, setLoadingMsg] = useState();
 
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
   const [error, setError] = useState("");
 
   const handleSubmit = async () => {
@@ -37,6 +39,7 @@ const RegistrationScreen = ({ navigation }) => {
       if (res.type === "success") {
         setLoadingMsg("Creating new account");
         await sleep(3000);
+        setInputs(defaultState);
         navigation.pop();
         newFlashMessage(res.msg, res.description, res.type);
       }
@@ -60,11 +63,9 @@ const RegistrationScreen = ({ navigation }) => {
         style={loginStyles.returnIcon}
         size={32}
         color={"#333"}
-        onPress={
-          (onPress = () => {
-            navigation.navigate("Login");
-          })
-        }
+        onPress={() => {
+          navigation.navigate("Login");
+        }}
       />
       <Error message={error} />
       <Input
@@ -84,11 +85,14 @@ const RegistrationScreen = ({ navigation }) => {
           setInputs({ ...inputs, email: text });
         }}
       />
-      <Input
-        style={loginStyles.input}
+      <PasswordInput
+        secureTextEntry={isPasswordHidden}
+        iconName={passwordIcon(isPasswordHidden)}
+        onPress={() => {
+          setIsPasswordHidden(!isPasswordHidden);
+        }}
         placeholder={"Password"}
         value={password}
-        secureTextEntry
         onChangeText={text => {
           setInputs({ ...inputs, password: text });
         }}

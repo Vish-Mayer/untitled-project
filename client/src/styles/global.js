@@ -19,12 +19,6 @@ export const globalStyles = StyleSheet.create({
     color: "red"
   },
 
-  successMsg: {
-    fontFamily: "nunito-bold",
-    padding: 10,
-    backgroundColor: "#90EE90"
-  },
-
   overlay: {
     ...StyleSheet.absoluteFill,
     backgroundColor: "rgba(0, 0, 0, 0.8)",
