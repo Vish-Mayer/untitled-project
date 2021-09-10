@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Keyboard } from "react-native";
 
 import { AuthContext } from "../contexts/AuthContext";
 import { authStyles } from "../styles/local";
@@ -14,6 +15,7 @@ import sleep from "../utils/sleep";
 import newFlashMessage from "../utils/newFlashMessage";
 import PasswordInput from "../components/PasswordInput";
 import choosePasswordIcon from "../helpers/choosePasswordIcon";
+import { useIsMount } from "../hooks/useIsMount";
 
 const RegistrationScreen = ({ navigation }) => {
   const { register } = React.useContext(AuthContext);
@@ -31,23 +33,25 @@ const RegistrationScreen = ({ navigation }) => {
   const [error, setError] = useState("");
 
   const handleSubmit = async () => {
+    setError("");
     try {
       setLoadingMsg("Please wait");
       setLoading(true);
       const res = await register(inputs);
-      console.log(res);
       if (res.type === "success") {
+        Keyboard.dismiss();
         setLoadingMsg("Creating new account");
         await sleep(3000);
+        setLoading(false);
         setInputs(defaultState);
-        navigation.pop();
         newFlashMessage(res.msg, res.description, res.type);
-      }
-
-      if (res.type === "error") {
+        navigation.pop();
+      } else if (res.type === "error") {
         setError([res.msg]);
+        setLoading(false);
+      } else {
+        setLoading(false);
       }
-      setLoading(false);
     } catch (err) {
       console.log(err);
       setError(err);
@@ -97,7 +101,6 @@ const RegistrationScreen = ({ navigation }) => {
           setInputs({ ...inputs, password: text });
         }}
       />
-
       <FilledButton
         title={"Create Account"}
         style={authStyles.button}
