@@ -1,4 +1,4 @@
-const passwordIcon = hidden => {
+const choosePasswordIcon = hidden => {
   if (hidden) {
     return "eye-off-outline";
   } else {
@@ -6,4 +6,4 @@ const passwordIcon = hidden => {
   }
 };
 
-export default passwordIcon;
+export default choosePasswordIcon;

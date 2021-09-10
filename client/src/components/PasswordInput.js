@@ -1,28 +1,15 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import React from "react";
+import { View, TextInput } from "react-native";
 import { globalStyles } from "../styles/global";
 import IconButton from "./IconButton";
 
 const PasswordInput = ({ onPress, iconName, style, ...props }) => {
-  const styles = StyleSheet.create({
-    searchSection: {
-      backgroundColor: "#e8e8e8",
-      width: "100%",
-      marginTop: 10,
-      borderRadius: 8
-    },
-    searchIcon: {
-      position: "absolute",
-      right: 25,
-      top: 10
-    }
-  });
   return (
-    <View style={styles.searchSection}>
-      <TextInput {...props} style={[globalStyles.input, style]} />
+    <View style={globalStyles.passwordInput}>
+      <TextInput {...props} style={style} />
       <IconButton
         name={iconName}
-        style={styles.searchIcon}
+        style={globalStyles.hidePasswordIcon}
         size={32}
         color={"#333"}
         onPress={onPress}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { AuthContext } from "../contexts/AuthContext";
-import { loginStyles } from "../styles/local";
+import { authStyles } from "../styles/local";
 
 import Heading from "../components/Heading";
 import Input from "../components/Input";
@@ -13,7 +13,7 @@ import Loading from "../components/Loading";
 import sleep from "../utils/sleep";
 import newFlashMessage from "../utils/newFlashMessage";
 import PasswordInput from "../components/PasswordInput";
-import passwordIcon from "../utils/passwordIcon";
+import choosePasswordIcon from "../helpers/choosePasswordIcon";
 
 const RegistrationScreen = ({ navigation }) => {
   const { register } = React.useContext(AuthContext);
@@ -57,10 +57,10 @@ const RegistrationScreen = ({ navigation }) => {
 
   return (
     <AuthContainer>
-      <Heading style={loginStyles.title}>REGISTER</Heading>
+      <Heading style={authStyles.title}>REGISTER</Heading>
       <IconButton
         name="arrow-back-circle-outline"
-        style={loginStyles.returnIcon}
+        style={authStyles.returnIcon}
         size={32}
         color={"#333"}
         onPress={() => {
@@ -69,7 +69,7 @@ const RegistrationScreen = ({ navigation }) => {
       />
       <Error message={error} />
       <Input
-        style={loginStyles.input}
+        style={authStyles.input}
         placeholder={"Username"}
         value={name}
         onChangeText={text => {
@@ -77,7 +77,7 @@ const RegistrationScreen = ({ navigation }) => {
         }}
       />
       <Input
-        style={loginStyles.input}
+        style={authStyles.input}
         placeholder={"Email"}
         value={email}
         keyboardType={"email-address"}
@@ -87,7 +87,7 @@ const RegistrationScreen = ({ navigation }) => {
       />
       <PasswordInput
         secureTextEntry={isPasswordHidden}
-        iconName={passwordIcon(isPasswordHidden)}
+        iconName={choosePasswordIcon(isPasswordHidden)}
         onPress={() => {
           setIsPasswordHidden(!isPasswordHidden);
         }}
@@ -97,9 +97,10 @@ const RegistrationScreen = ({ navigation }) => {
           setInputs({ ...inputs, password: text });
         }}
       />
+
       <FilledButton
         title={"Create Account"}
-        style={loginStyles.button}
+        style={authStyles.button}
         onPress={handleSubmit}
       />
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Heading from "../components/Heading";
 import Input from "../components/Input";
-import { loginStyles } from "../styles/local";
+import { authStyles } from "../styles/local";
 import FilledButton from "../components/FilledButton";
 import TextButton from "../components/TextButton";
 import Error from "../components/Error";
@@ -12,21 +12,21 @@ const LoginScreen = ({ navigation }) => {
   const { login } = React.useContext(AuthContext);
   return (
     <AuthContainer>
-      <Heading style={loginStyles.title}>LOGIN</Heading>
+      <Heading style={authStyles.title}>LOGIN</Heading>
       <Error message={""} />
       <Input
-        style={loginStyles.input}
+        style={authStyles.input}
         placeholder={"Email"}
         keyboardType={"email-address"}
       />
       <Input
-        style={loginStyles.input}
+        style={authStyles.input}
         placeholder={"Password"}
         secureTextEntry
       />
       <FilledButton
         title={"Login"}
-        style={loginStyles.button}
+        style={authStyles.button}
         onPress={() => {
           login();
         }}
@@ -34,7 +34,7 @@ const LoginScreen = ({ navigation }) => {
 
       <TextButton
         title={"Don't have an account? Sign up here"}
-        style={loginStyles.button}
+        style={authStyles.button}
         onPress={() => {
           navigation.navigate("Register");
         }}

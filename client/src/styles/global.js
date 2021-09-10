@@ -1,5 +1,15 @@
 import { StyleSheet } from "react-native";
 
+const inputStyle = margin => {
+  return {
+    margin: margin,
+    backgroundColor: "#e8e8e8",
+    width: "100%",
+    padding: 20,
+    borderRadius: 8
+  };
+};
+
 export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -44,12 +54,16 @@ export const globalStyles = StyleSheet.create({
     lineHeight: 20
   },
 
-  input: {
-    backgroundColor: "#e8e8e8",
-    width: "100%",
-    padding: 20,
-    borderRadius: 8
+  input: inputStyle(),
+
+  passwordInput: inputStyle(10),
+
+  hidePasswordIcon: {
+    position: "absolute",
+    right: 25,
+    top: 10
   },
+
   filledButton: {
     backgroundColor: "purple",
     width: "100%",

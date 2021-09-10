@@ -1,12 +1,13 @@
 import { StyleSheet } from "react-native";
 
-export const loginStyles = StyleSheet.create({
+export const authStyles = StyleSheet.create({
   title: {
     marginBottom: 48
   },
   input: {
     marginVertical: 8
   },
+
   button: {
     marginVertical: 32
   },
