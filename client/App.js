@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useReducer, useEffect } from "react";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 
@@ -13,6 +13,7 @@ import { AuthStackNavigator } from "./src/navigators/AuthStackNavigator";
 import { AuthContext } from "./src/contexts/AuthContext";
 import sleep from "./src/utils/sleep";
 import FlashMsg from "./src/components/FlashMsg";
+import createAction from "./src/utils/createAction";
 
 const getFonts = () =>
   Font.loadAsync({
@@ -25,6 +26,27 @@ const AuthStack = createNativeStackNavigator();
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  const [state, dispatch] = useReducer(
+    (state, action) => {
+      switch (action.type) {
+        case "SET_USER":
+          return {
+            ...state,
+            user: { ...action.payload }
+          };
+        default:
+          return state;
+      }
+    },
+    {
+      user: undefined
+    }
+  );
+
+  useEffect(() => {
+    console.log(state.user);
+  }, [state]);
 
   const auth = useMemo(
     () => ({
@@ -42,7 +64,17 @@ export default function App() {
               }
             );
             const parsedResponse = await response.json();
-            return parsedResponse;
+            const user = {
+              email: inputs.email,
+              token: parsedResponse.token
+            };
+
+            if (parsedResponse.type === "success") {
+              dispatch(createAction("SET_USER", user));
+              return parsedResponse;
+            } else {
+              return parsedResponse;
+            }
           } catch (error) {
             console.log(error.message);
           }
@@ -72,7 +104,7 @@ export default function App() {
         }
       }
     }),
-    [auth]
+    []
   );
 
   if (fontsLoaded) {

@@ -44,8 +44,6 @@ const LoginScreen = ({ navigation }) => {
         setLoading(false);
         newFlashMessage("Login Sucess", "", res.type);
         setInputs(defaultState);
-        // navigation.pop();
-        console.log(res);
       } else if (res.type === "error") {
         setError(res.msg);
         setLoading(false);
@@ -53,7 +51,6 @@ const LoginScreen = ({ navigation }) => {
         setLoading(false);
       }
     } catch (err) {
-      console.log(err);
       setError(err);
       setLoading(false);
     }
