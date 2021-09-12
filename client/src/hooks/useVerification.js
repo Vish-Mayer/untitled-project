@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LOCALIP, PORT } from "react-native-dotenv";
 import sleep from "../utils/sleep";
-
 const useVerification = state => {
-  const [isVerified, setIsVerified] = useState(false);
+  const [isVerified, setIsVerified] = useState(null);
   useEffect(() => {
     const verify = async () => {
       try {
@@ -13,6 +12,7 @@ const useVerification = state => {
           headers: { token: await AsyncStorage.getItem("token") }
         });
         const parsedResponse = await response.json();
+        console.log(parsedResponse);
         if (parsedResponse.verified) {
           await sleep(3000);
           setIsVerified(true);

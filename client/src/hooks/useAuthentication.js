@@ -1,4 +1,4 @@
-import React, { useMemo, useReducer } from "react";
+import { useMemo, useReducer } from "react";
 
 import { LOCALIP, PORT } from "react-native-dotenv";
 
@@ -33,7 +33,6 @@ const useAuthentication = () => {
     () => ({
       login: async inputs => {
         {
-          console.log("login", inputs);
           try {
             await sleep(1000);
             const response = await fetch(
@@ -63,14 +62,12 @@ const useAuthentication = () => {
         }
       },
       logout: async () => {
-        console.log("log out");
         await sleep(2000);
         AsyncStorage.clear();
         dispatch(createAction("REMOVE_USER"));
       },
       register: async inputs => {
         {
-          console.log("register", inputs);
           try {
             await sleep(1000);
             const response = await fetch(

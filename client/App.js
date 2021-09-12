@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useReducer, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 
@@ -15,6 +15,8 @@ import { AuthContext } from "./src/contexts/AuthContext";
 import useAuthentication from "./src/hooks/useAuthentication";
 import useVerification from "./src/hooks/useVerification";
 import FlashMsg from "./src/components/FlashMsg";
+import Loading from "./src/components/Loading";
+import useResumeSession from "./src/hooks/useResumeSession";
 
 const getFonts = () =>
   Font.loadAsync({
@@ -29,6 +31,7 @@ export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const { auth, state } = useAuthentication();
   const { isVerified } = useVerification(state);
+  const { isLoadingSession } = useResumeSession(isVerified);
 
   if (fontsLoaded) {
     return (
@@ -51,6 +54,7 @@ export default function App() {
               />
             )}
           </RootStack.Navigator>
+          <Loading loading={isLoadingSession} title={"Resuming session"} />
           <FlashMsg />
         </NavigationContainer>
       </AuthContext.Provider>

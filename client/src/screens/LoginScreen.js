@@ -3,6 +3,8 @@ import { Keyboard } from "react-native";
 import { AuthContext } from "../contexts/AuthContext";
 
 import { authStyles } from "../styles/local";
+import { createFlashMessage } from "../utils/createFlashMessage";
+import sleep from "../utils/sleep";
 
 import Heading from "../components/Heading";
 import Input from "../components/Input";
@@ -13,8 +15,6 @@ import Error from "../components/Error";
 import AuthContainer from "../components/AuthContainer";
 import choosePasswordIcon from "../helpers/choosePasswordIcon";
 import Loading from "../components/Loading";
-import sleep from "../utils/sleep";
-import { createFlashMessage } from "../utils/createFlashMessage";
 
 const LoginScreen = ({ navigation }) => {
   const { login } = React.useContext(AuthContext);
