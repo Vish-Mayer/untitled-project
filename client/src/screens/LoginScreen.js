@@ -14,7 +14,7 @@ import AuthContainer from "../components/AuthContainer";
 import choosePasswordIcon from "../helpers/choosePasswordIcon";
 import Loading from "../components/Loading";
 import sleep from "../utils/sleep";
-import newFlashMessage from "../utils/newFlashMessage";
+import { createFlashMessage } from "../utils/createFlashMessage";
 
 const LoginScreen = ({ navigation }) => {
   const { login } = React.useContext(AuthContext);
@@ -42,7 +42,10 @@ const LoginScreen = ({ navigation }) => {
         setLoadingMsg("Verifying details");
         await sleep(3000);
         setLoading(false);
-        newFlashMessage("Login Sucess", "", res.type);
+        createFlashMessage({
+          message: "logged in",
+          type: "success"
+        });
         setInputs(defaultState);
       } else if (res.type === "error") {
         setError(res.msg);

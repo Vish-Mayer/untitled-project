@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { View, Button, Text } from "react-native";
+import { View, Text } from "react-native";
 import { globalStyles } from "../styles/global";
 import FilledButton from "../components/FilledButton";
 import { AuthContext } from "../contexts/AuthContext";
-import sleep from "../utils/sleep";
 import Loading from "../components/Loading";
-import newFlashMessage from "../utils/newFlashMessage";
+import { createFlashMessage } from "../utils/createFlashMessage";
 
 const Dashboard = () => {
   const { logout } = React.useContext(AuthContext);
@@ -19,7 +18,10 @@ const Dashboard = () => {
           setLoading(true);
           logout().then(() => {
             setLoading(false);
-            newFlashMessage("Logged out", "", "success");
+            createFlashMessage({
+              message: "logged out",
+              type: "success"
+            });
           });
         }}
       />

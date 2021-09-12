@@ -12,7 +12,7 @@ import IconButton from "../components/IconButton";
 import AuthContainer from "../components/AuthContainer";
 import Loading from "../components/Loading";
 import sleep from "../utils/sleep";
-import newFlashMessage from "../utils/newFlashMessage";
+import { createFlashMessage } from "../utils/createFlashMessage";
 import PasswordInput from "../components/PasswordInput";
 import choosePasswordIcon from "../helpers/choosePasswordIcon";
 import { useIsMount } from "../hooks/useIsMount";
@@ -44,7 +44,11 @@ const RegistrationScreen = ({ navigation }) => {
         await sleep(3000);
         setLoading(false);
         setInputs(defaultState);
-        newFlashMessage(res.msg, res.description, res.type);
+        createFlashMessage({
+          message: res.msg,
+          description: res.description,
+          type: res.type
+        });
         navigation.pop();
       } else if (res.type === "error") {
         setError([res.msg]);
