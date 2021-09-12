@@ -6,18 +6,15 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { lightTheme } from "./src/themes/light";
 
-import { LOCALIP, PORT } from "react-native-dotenv";
-
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import { MainStackNavigator } from "./src/navigators/MainStackNavigator";
 import { AuthStackNavigator } from "./src/navigators/AuthStackNavigator";
 import { AuthContext } from "./src/contexts/AuthContext";
-import sleep from "./src/utils/sleep";
-import FlashMsg from "./src/components/FlashMsg";
-import createAction from "./src/utils/createAction";
-import { MainStackNavigator } from "./src/navigators/MainStackNavigator";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import useAuthentication from "./src/hooks/useAuthentication";
+import useVerification from "./src/hooks/useVerification";
+import FlashMsg from "./src/components/FlashMsg";
 
 const getFonts = () =>
   Font.loadAsync({
@@ -30,29 +27,8 @@ const AuthStack = createNativeStackNavigator();
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { auth, state } = useAuthentication();
-
-  useEffect(() => {
-    const verify = async () => {
-      try {
-        const response = await fetch(`http://${LOCALIP}:${PORT}/auth/verify`, {
-          method: "GET",
-          headers: { token: await AsyncStorage.getItem("token") }
-        });
-        const parsedResponse = await response.json();
-        if (parsedResponse.verified) {
-          await sleep(3000);
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    verify();
-  }, [state]);
+  const { isVerified } = useVerification(state);
 
   if (fontsLoaded) {
     return (
@@ -63,7 +39,7 @@ export default function App() {
               headerShown: false
             }}
           >
-            {isAuthenticated ? (
+            {isVerified ? (
               <RootStack.Screen
                 name={"MainStack"}
                 component={MainStackNavigator}
