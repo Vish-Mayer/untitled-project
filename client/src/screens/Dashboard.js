@@ -5,10 +5,12 @@ import FilledButton from "../components/FilledButton";
 import { AuthContext } from "../contexts/AuthContext";
 import Loading from "../components/Loading";
 import { createFlashMessage } from "../utils/createFlashMessage";
+import useGetUser from "../hooks/useGetUser";
 
 const Dashboard = () => {
   const { logout } = React.useContext(AuthContext);
   const [loading, setLoading] = useState(false);
+  const { user } = useGetUser();
 
   return (
     <View style={globalStyles.container}>
@@ -25,7 +27,8 @@ const Dashboard = () => {
           });
         }}
       />
-      <Text>Welcome to the Dashboard</Text>
+      {user && <Text> Welcome {user.name}</Text>}
+
       <Loading loading={loading} title={"Logging out"} />
     </View>
   );
