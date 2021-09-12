@@ -15,10 +15,9 @@ import sleep from "./src/utils/sleep";
 import FlashMsg from "./src/components/FlashMsg";
 import createAction from "./src/utils/createAction";
 import { MainStackNavigator } from "./src/navigators/MainStackNavigator";
-import { useIsMount } from "./src/hooks/useIsMount";
 
-import * as SecureStore from "expo-secure-store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import useAuthentication from "./src/hooks/useAuthentication";
 
 const getFonts = () =>
   Font.loadAsync({
@@ -26,47 +25,13 @@ const getFonts = () =>
     "nunito-bold": require("./assets/fonts/Nunito-Bold.ttf")
   });
 
-const addToken = async value => {
-  await AsyncStorage.setItem("token", value);
-};
-
-const getToken = async () => {
-  const token = await AsyncStorage.getItem("token");
-  return token;
-};
-
-const removeToken = async () => {
-  await AsyncStorage.clear();
-};
-
 const RootStack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const [state, dispatch] = useReducer(
-    (state, action) => {
-      switch (action.type) {
-        case "SET_USER":
-          return {
-            ...state,
-            user: { ...action.payload }
-          };
-        case "REMOVE_USER":
-          return {
-            ...state,
-            user: undefined
-          };
-        default:
-          return state;
-      }
-    },
-    {
-      user: undefined
-    }
-  );
+  const { auth, state } = useAuthentication();
 
   useEffect(() => {
     const verify = async () => {
@@ -88,69 +53,6 @@ export default function App() {
     };
     verify();
   }, [state]);
-
-  const auth = useMemo(
-    () => ({
-      login: async inputs => {
-        {
-          console.log("login", inputs);
-          try {
-            await sleep(1000);
-            const response = await fetch(
-              `http://${LOCALIP}:${PORT}/auth/login`,
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(inputs)
-              }
-            );
-            const parsedResponse = await response.json();
-            const user = {
-              email: inputs.email,
-              token: parsedResponse.token
-            };
-
-            if (parsedResponse.type === "success") {
-              addToken(user.token);
-              dispatch(createAction("SET_USER", user));
-              return parsedResponse;
-            } else {
-              return parsedResponse;
-            }
-          } catch (error) {
-            console.log(error.message);
-          }
-        }
-      },
-      logout: async () => {
-        console.log("log out");
-        await sleep(2000);
-        AsyncStorage.clear();
-        dispatch(createAction("REMOVE_USER"));
-      },
-      register: async inputs => {
-        {
-          console.log("register", inputs);
-          try {
-            await sleep(1000);
-            const response = await fetch(
-              `http://${LOCALIP}:${PORT}/auth/register`,
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(inputs)
-              }
-            );
-            const parsedResponse = await response.json();
-            return parsedResponse;
-          } catch (error) {
-            console.log(error.message);
-          }
-        }
-      }
-    }),
-    []
-  );
 
   if (fontsLoaded) {
     return (
