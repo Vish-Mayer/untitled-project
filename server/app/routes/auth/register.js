@@ -13,7 +13,9 @@ router.post("/register", validateCredentials, async (req, res) => {
     const user = await alreadyExists(email);
 
     if (user) {
-      return res.status(401).send({ msg: "User already exists" });
+      return res
+        .status(401)
+        .send({ type: "error", msg: "User already exists" });
     }
 
     const newUser = await createUser(name, email, password);
@@ -22,8 +24,12 @@ router.post("/register", validateCredentials, async (req, res) => {
 
     await sendVerification(newUser.email, token);
 
-    // res.json(`A verification link has been sent to ${newUser.email}`);
-    res.json({ token });
+    return res.status(200).send({
+      type: "success",
+      name: "new account verification",
+      msg: "Account successfully created!",
+      description: `Before logging in, please verify your account by clicking on the link sent to ${newUser.email}`
+    });
   } catch (error) {
     console.error(error.message);
     res.sendStatus(500).send("Server Error");

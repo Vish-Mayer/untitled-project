@@ -16,7 +16,7 @@ const sendVerification = async (email, token) => {
     }
   });
 
-  const url = `http://localhost:5000/auth/confirmation/${token}`;
+  const url = `http://${process.env.LOCALIP}:5000/auth/confirmation/${token}`;
 
   let info = await transporter.sendMail({
     to: `${email}`,

@@ -11,19 +11,24 @@ router.post("/login", async (req, res) => {
     const user = await alreadyExists(email);
 
     if (!user) {
-      return res.status(401).json({ msg: "Incorrect Email or Password" });
+      return res
+        .status(401)
+        .json({ type: "error", msg: "Incorrect Email or Password" });
     }
 
     const authenticatedUser = await authenticateUser(email, password);
 
     if (!authenticatedUser) {
-      return res.status(401).json({ msg: "Incorrect Email or Password" });
+      return res
+        .status(401)
+        .json({ type: "error", msg: "Incorrect Email or Password" });
     }
 
     const verified = await authenticatedUser.verified();
 
     if (!verified) {
       return res.status(401).json({
+        type: "success",
         msg:
           "Please check your email and click on the link to verify your account"
       });
@@ -31,7 +36,7 @@ router.post("/login", async (req, res) => {
 
     const token = jwtGenerator(authenticatedUser.id);
 
-    res.json({ token });
+    res.json({ type: "success", token: token });
   } catch (error) {
     res.sendStatus(500);
     return;
