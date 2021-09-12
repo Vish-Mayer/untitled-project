@@ -14,6 +14,11 @@ import { AuthContext } from "./src/contexts/AuthContext";
 import sleep from "./src/utils/sleep";
 import FlashMsg from "./src/components/FlashMsg";
 import createAction from "./src/utils/createAction";
+import { MainStackNavigator } from "./src/navigators/MainStackNavigator";
+import { useIsMount } from "./src/hooks/useIsMount";
+
+import * as SecureStore from "expo-secure-store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const getFonts = () =>
   Font.loadAsync({
@@ -21,11 +26,25 @@ const getFonts = () =>
     "nunito-bold": require("./assets/fonts/Nunito-Bold.ttf")
   });
 
+const addToken = async value => {
+  await AsyncStorage.setItem("token", value);
+};
+
+const getToken = async () => {
+  const token = await AsyncStorage.getItem("token");
+  return token;
+};
+
+const removeToken = async () => {
+  await AsyncStorage.clear();
+};
+
 const RootStack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const [state, dispatch] = useReducer(
     (state, action) => {
@@ -34,6 +53,11 @@ export default function App() {
           return {
             ...state,
             user: { ...action.payload }
+          };
+        case "REMOVE_USER":
+          return {
+            ...state,
+            user: undefined
           };
         default:
           return state;
@@ -45,7 +69,24 @@ export default function App() {
   );
 
   useEffect(() => {
-    console.log(state.user);
+    const verify = async () => {
+      try {
+        const response = await fetch(`http://${LOCALIP}:${PORT}/auth/verify`, {
+          method: "GET",
+          headers: { token: await AsyncStorage.getItem("token") }
+        });
+        const parsedResponse = await response.json();
+        if (parsedResponse.verified) {
+          await sleep(3000);
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    verify();
   }, [state]);
 
   const auth = useMemo(
@@ -70,6 +111,7 @@ export default function App() {
             };
 
             if (parsedResponse.type === "success") {
+              addToken(user.token);
               dispatch(createAction("SET_USER", user));
               return parsedResponse;
             } else {
@@ -80,8 +122,11 @@ export default function App() {
           }
         }
       },
-      logout: () => {
+      logout: async () => {
         console.log("log out");
+        await sleep(2000);
+        AsyncStorage.clear();
+        dispatch(createAction("REMOVE_USER"));
       },
       register: async inputs => {
         {
@@ -116,10 +161,17 @@ export default function App() {
               headerShown: false
             }}
           >
-            <RootStack.Screen
-              name={"AuthStack"}
-              component={AuthStackNavigator}
-            />
+            {isAuthenticated ? (
+              <RootStack.Screen
+                name={"MainStack"}
+                component={MainStackNavigator}
+              />
+            ) : (
+              <AuthStack.Screen
+                name={"AuthStack"}
+                component={AuthStackNavigator}
+              />
+            )}
           </RootStack.Navigator>
           <FlashMsg />
         </NavigationContainer>
