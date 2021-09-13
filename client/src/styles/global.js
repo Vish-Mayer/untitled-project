@@ -101,5 +101,27 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
     borderRadius: 8
+  },
+
+  logOutconfirmation: {
+    height: "18%",
+    backgroundColor: "white",
+    flexDirection: "row",
+    padding: 20,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+
+  yesIcon: {
+    position: "absolute",
+    left: 80,
+    bottom: 5
+  },
+
+  noIcon: {
+    position: "absolute",
+    right: 80,
+    bottom: 5
   }
 });

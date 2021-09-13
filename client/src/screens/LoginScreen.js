@@ -31,6 +31,34 @@ const LoginScreen = ({ navigation }) => {
 
   const [error, setError] = useState("");
 
+  const handleSuccess = async () => {
+    Keyboard.dismiss();
+    setLoadingMsg("Verifying details");
+    await sleep(3000);
+    setLoading(false);
+    createFlashMessage({
+      message: "logged in",
+      type: "success"
+    });
+    setInputs(defaultState);
+  };
+
+  const handleError = res => {
+    createFlashMessage({
+      message: res.msg,
+      type: "danger"
+    });
+    setLoading(false);
+  };
+
+  const handleUnverified = res => {
+    createFlashMessage({
+      message: res.msg,
+      type: "warning"
+    });
+    setLoading(false);
+  };
+
   const handleSubmit = async () => {
     setError(false);
     try {
@@ -38,18 +66,11 @@ const LoginScreen = ({ navigation }) => {
       setLoading(true);
       const res = await login(inputs);
       if (res.type === "success") {
-        Keyboard.dismiss();
-        setLoadingMsg("Verifying details");
-        await sleep(3000);
-        setLoading(false);
-        createFlashMessage({
-          message: "logged in",
-          type: "success"
-        });
-        setInputs(defaultState);
+        handleSuccess();
       } else if (res.type === "error") {
-        setError(res.msg);
-        setLoading(false);
+        handleError(res);
+      } else if (res.type === "unverified") {
+        handleUnverified(res);
       } else {
         setLoading(false);
       }

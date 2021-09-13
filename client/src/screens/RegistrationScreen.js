@@ -15,13 +15,14 @@ import sleep from "../utils/sleep";
 import { createFlashMessage } from "../utils/createFlashMessage";
 import PasswordInput from "../components/PasswordInput";
 import choosePasswordIcon from "../helpers/choosePasswordIcon";
-import { useIsMount } from "../hooks/useIsMount";
 
 const RegistrationScreen = ({ navigation }) => {
   const { register } = React.useContext(AuthContext);
 
   const defaultState = { name: "", email: "", password: "" };
+
   const [inputs, setInputs] = useState(defaultState);
+
   const { name, email, password } = inputs;
 
   const [loading, setLoading] = useState(false);
@@ -32,6 +33,28 @@ const RegistrationScreen = ({ navigation }) => {
 
   const [error, setError] = useState("");
 
+  const handleSuccess = async res => {
+    Keyboard.dismiss();
+    setLoadingMsg("Creating new account");
+    await sleep(3000);
+    setLoading(false);
+    setInputs(defaultState);
+    createFlashMessage({
+      message: res.msg,
+      description: res.description,
+      type: res.type
+    });
+    navigation.pop();
+  };
+
+  const handleError = res => {
+    createFlashMessage({
+      message: res.msg,
+      description: res.description,
+      type: "danger"
+    });
+  };
+
   const handleSubmit = async () => {
     setError("");
     try {
@@ -39,19 +62,9 @@ const RegistrationScreen = ({ navigation }) => {
       setLoading(true);
       const res = await register(inputs);
       if (res.type === "success") {
-        Keyboard.dismiss();
-        setLoadingMsg("Creating new account");
-        await sleep(3000);
-        setLoading(false);
-        setInputs(defaultState);
-        createFlashMessage({
-          message: res.msg,
-          description: res.description,
-          type: res.type
-        });
-        navigation.pop();
+        handleSuccess(res);
       } else if (res.type === "error") {
-        setError([res.msg]);
+        handleError(res);
         setLoading(false);
       } else {
         setLoading(false);
