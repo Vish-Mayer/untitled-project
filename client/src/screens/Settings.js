@@ -9,12 +9,13 @@ import IconButton from "../components/IconButton";
 import { privateStyles } from "../styles/local";
 import LogOutConfirmation from "../components/LogOutConfirmation";
 
-const Dashboard = () => {
+const Settings = () => {
   const { logout } = React.useContext(AuthContext);
   const [loading, setLoading] = useState(false);
+  const [islogOutClicked, setIsLogOutClicked] = useState(false);
   const { user } = useGetUser();
 
-  const [islogOutClicked, setIsLogOutClicked] = useState(false);
+  console.log(user);
 
   const handleLogOut = () => {
     setIsLogOutClicked(false);
@@ -39,7 +40,6 @@ const Dashboard = () => {
           setIsLogOutClicked(true);
         }}
       />
-      {user && <Text> Welcome {user.name}</Text>}
 
       <LogOutConfirmation
         logOutClicked={islogOutClicked}
@@ -56,4 +56,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Settings;
