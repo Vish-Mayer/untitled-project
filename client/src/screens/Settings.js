@@ -4,7 +4,6 @@ import { globalStyles } from "../styles/global";
 import { AuthContext } from "../contexts/AuthContext";
 import Loading from "../components/Loading";
 import { createFlashMessage } from "../utils/createFlashMessage";
-import useGetUser from "../hooks/useGetUser";
 import IconButton from "../components/IconButton";
 import { privateStyles } from "../styles/local";
 import LogOutConfirmation from "../components/LogOutConfirmation";
@@ -13,9 +12,6 @@ const Settings = () => {
   const { logout } = React.useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [islogOutClicked, setIsLogOutClicked] = useState(false);
-  const { user } = useGetUser();
-
-  console.log(user);
 
   const handleLogOut = () => {
     setIsLogOutClicked(false);

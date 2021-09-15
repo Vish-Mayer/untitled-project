@@ -36,5 +36,5 @@ app.get("/auth/confirmation/:token", async (req, res) => {
   return;
 });
 
-app.use("/dashboard", dashboard);
+app.use("/get-user", dashboard);
 export default app;

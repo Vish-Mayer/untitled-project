@@ -28,7 +28,7 @@ router.post("/login", async (req, res) => {
 
     if (!verified) {
       return res.status(401).json({
-        type: "success",
+        type: "unverified",
         msg:
           "Please check your email and click on the link to verify your account"
       });
