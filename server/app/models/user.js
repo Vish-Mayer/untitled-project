@@ -1,14 +1,18 @@
 import connection from "../dbConnection.js";
 import bcryptGenerator from "../utils/bcryptGenerator.js";
 import bcrypt from "bcrypt";
-import { conditionalExpression } from "@babel/types";
-
+import { displayClubs } from "./club.js";
 export class User {
   constructor(id, name, email) {
     this.id = id;
     this.name = name;
     this.email = email;
   }
+
+  clubs = async () => {
+    return await displayClubs(this.id);
+  };
+
   getPassword = async () => {
     const user = await connection.query(
       `SELECT user_password 

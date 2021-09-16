@@ -4,7 +4,7 @@ import dbConnection from "../../dbConnection";
 
 describe("User", () => {
   beforeEach(async () => {
-    await dbConnection.query("TRUNCATE TABLE users");
+    await dbConnection.query("TRUNCATE TABLE users CASCADE");
   });
 
   describe("initialize", () => {

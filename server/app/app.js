@@ -7,7 +7,8 @@ import verify from "./routes/auth/verify.js";
 import register from "./routes/auth/register.js";
 import jwt from "jsonwebtoken";
 
-import dashboard from "./routes/dashboard.js";
+import getUser from "./routes/getUser.js";
+import golfBag from "./routes/golfBag.js";
 
 doenv.config();
 
@@ -36,5 +37,8 @@ app.get("/auth/confirmation/:token", async (req, res) => {
   return;
 });
 
-app.use("/get-user", dashboard);
+app.use("/get-user", getUser);
+
+app.use("/golf-bag", golfBag);
+
 export default app;

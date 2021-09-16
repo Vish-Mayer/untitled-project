@@ -7,7 +7,7 @@ import { createUser } from "../models/user.js";
 
 describe("POST/ register", () => {
   beforeEach(async () => {
-    await dbConnection.query("TRUNCATE TABLE users");
+    await dbConnection.query("TRUNCATE TABLE user_club CASCADE");
   });
 
   describe("when an entry is missing", () => {
