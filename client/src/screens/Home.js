@@ -6,7 +6,6 @@ import { UserContext } from "../contexts/UserContext";
 const Home = () => {
   const user = useContext(UserContext);
 
-  console.log(user);
   return (
     <View style={globalStyles.container}>
       <Text> {user && user.name}</Text>
